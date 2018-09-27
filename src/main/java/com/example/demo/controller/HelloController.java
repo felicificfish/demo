@@ -83,8 +83,10 @@ public class HelloController {
         log.info("----------------{}", a);
 
 
-        String a1 = EmojiParser.parseToAliases(text);// 将表情符号转为字符
-        String a2 = EmojiParser.parseToUnicode(a1);// 将字符转为表情符号
+        // 将表情符号转为字符
+        String a1 = EmojiParser.parseToAliases(text);
+        // 将字符转为表情符号
+        String a2 = EmojiParser.parseToUnicode(a1);
         log.info("a1={}, a2={}", a1, a2);
 
         return a2;
@@ -95,7 +97,26 @@ public class HelloController {
         base64Str = base64Str.replaceFirst("data:image/\\S*;base64,", "");
         byte[] bytes = Base64.decodeBase64(base64Str);
         for (int i = 0; i < bytes.length; ++i) {
-            if (bytes[i] < 0) {// 调整异常数据
+            // 调整异常数据
+            if (bytes[i] < 0) {
+                bytes[i] += 256;
+            }
+        }
+        try (OutputStream out = new FileOutputStream("D:/b.png")) {
+            out.write(bytes);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @PostMapping(value = "base642")
+    public void base64Process2(@RequestParam String base64Str) {
+        base64Str = base64Str.replaceFirst("data:image/\\S*;base64,", "");
+        byte[] bytes = java.util.Base64.getDecoder().decode(base64Str);
+        for (int i = 0; i < bytes.length; ++i) {
+            // 调整异常数据
+            if (bytes[i] < 0) {
                 bytes[i] += 256;
             }
         }
