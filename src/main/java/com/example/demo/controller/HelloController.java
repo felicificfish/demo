@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.example.demo.configs.api.JSONResultDO;
+import com.example.demo.constant.Constants;
 import com.example.demo.model.Student1;
 import com.example.demo.model.Student2;
 import com.example.demo.service.MultithreadingService;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,12 +48,11 @@ public class HelloController {
 
     @GetMapping(value = "getMsg")
     public JSONResultDO getMsg() {
-        JSONResultDO result = new JSONResultDO(false, "error_msg");
-        return result;
+        return new JSONResultDO(false, "error_msg");
     }
 
     @GetMapping(value = "multithreading")
-    public String Multithreading(@RequestParam String name) {
+    public String multiThreading(@RequestParam String name) {
         List<String> names = new ArrayList<>();
         names.add(name);
         names.add("111");
@@ -67,19 +66,19 @@ public class HelloController {
     public String specialChar(@RequestParam String text) {
         // 四字节字符处理
         log.info("============={}", text);
-        byte[] conbyte = text.getBytes();
-        for (int i = 0; i < conbyte.length; i++) {
-            if ((conbyte[i] & 0xF8) == 0xF0) {
-                for (int j = 0; j < 4; j++) {
-                    conbyte[i + j] = 0x30;
+        byte[] conByte = text.getBytes();
+        for (int i = 0; i < conByte.length; i++) {
+            if ((conByte[i] & 0xF8) == 0xF0) {
+                for (int j = 0; j < Constants.Common.NUMBER_FOUR; j++) {
+                    conByte[i + j] = 0x30;
                 }
                 i += 3;
             }
         }
-        String newText = new String(conbyte);
+        String newText = new String(conByte);
         log.info("============={}", newText);
 
-        String a = new String(conbyte, StandardCharsets.UTF_8);
+        String a = new String(conByte, StandardCharsets.UTF_8);
         log.info("----------------{}", a);
 
 
