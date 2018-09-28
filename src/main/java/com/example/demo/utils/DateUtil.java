@@ -8,7 +8,6 @@ import java.util.Date;
  * 时间工具
  *
  * @author zhou.xy
- * @date 2018/9/20 14:48
  * @since 1.0
  */
 public class DateUtil {
@@ -134,7 +133,8 @@ public class DateUtil {
         end.set(Calendar.MINUTE, 0);
         end.set(Calendar.SECOND, 0);
         end.set(Calendar.MILLISECOND, 0);
-        return (int) ((end.getTimeInMillis() - start.getTimeInMillis()) / 86400000L);// 60 * 60 * 24 * 1000L
+        // 60 * 60 * 24 * 1000L
+        return (int) ((end.getTimeInMillis() - start.getTimeInMillis()) / 86400000L);
     }
 
 }

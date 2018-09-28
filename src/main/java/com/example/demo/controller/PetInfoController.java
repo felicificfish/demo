@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
  * 宠物信息Controller
  *
  * @author zhou.xy
- * @date 2018/9/21 15:21
  * @since 1.0
  */
 @Log4j2

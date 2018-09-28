@@ -1,23 +1,33 @@
 package com.example.demo.test;
 
+import lombok.extern.log4j.Log4j2;
+
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+/**
+ * 测试
+ *
+ * @author zhou.xy
+ * @since 1.0.0
+ */
+@Log4j2
 public class MyTest {
+    private static Pattern numberPattern = Pattern.compile("[0-9]+");
     public static void main(String[] args) {
         String str = "data:image/png;base64,iVBORw0KGgoAAAANSU";
         String str2 = str.replaceFirst("data:image/\\S*;base64,", "");
-        System.out.println(str);
-        System.out.println(str2);
+        log.info(str);
+        log.info(str2);
 
         Long a = 123L;
         String b = "123";
-        System.out.println(b.equals(a.toString()));
-        System.out.println(Objects.equals(a, b));
+        log.info(b.equals(a.toString()));
+        log.info(Objects.equals(a, b));
 
-        System.out.println(OptTypeEnum.getByCode("BIND2".replaceAll("\\d+","")).getMsg());
+        log.info(OptTypeEnum.getByCode("BIND2".replaceAll("\\d+","")).getMsg());
 
-        System.out.println(Pattern.compile("[^0-9]").matcher("BIND2").replaceAll(""));
+        log.info(numberPattern.matcher("BIND2").replaceAll(""));
     }
 
     public enum OptTypeEnum {
@@ -45,16 +55,9 @@ public class MyTest {
             return code;
         }
 
-        public void setCode(String code) {
-            this.code = code;
-        }
-
         public String getMsg() {
             return msg;
         }
 
-        public void setMsg(String msg) {
-            this.msg = msg;
-        }
     }
 }

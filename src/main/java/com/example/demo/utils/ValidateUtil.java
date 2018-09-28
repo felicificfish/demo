@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
  * 验证工具
  *
  * @author zhou.xy
- * @date 2018/9/20 13:48
  * @since 1.0
  */
 public class ValidateUtil {

@@ -4,7 +4,6 @@ package com.example.demo.constant;
  * 常量类
  *
  * @author zhou.xy
- * @date 2018/9/27 15:54
  * @since 1.0
  */
 public final class Constants {

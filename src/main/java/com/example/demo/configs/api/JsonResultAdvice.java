@@ -15,29 +15,38 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.util.Map;
 
+/**
+ * 封装统一返回结构
+ *
+ * @author zhou.xy
+ * @since 1.0.0
+ */
 @Log4j2
 @ControllerAdvice
-public class JSONResultAdvice implements ResponseBodyAdvice<Object> {
-    public JSONResultAdvice() {
-
+public class JsonResultAdvice implements ResponseBodyAdvice<Object> {
+    public JsonResultAdvice() {
+        // Do nothing
     }
 
+    @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         return FastJsonHttpMessageConverter.class.isAssignableFrom(converterType);
     }
 
-    public JSONResultDO beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+    @Override
+    public JsonResultDO beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         if (null == body || returnType.getMethod().getReturnType().isAssignableFrom(Void.TYPE)) {
-            return JSONResultDO.EMPTY_RESULT;
+            return JsonResultDO.EMPTY_RESULT;
         }
 
-        if (body instanceof JSONResultDO) {
-            return (JSONResultDO) body;
+        if (body instanceof JsonResultDO) {
+            return (JsonResultDO) body;
         }
 
-        JSONResultDO result = new JSONResultDO();
+        JsonResultDO result = new JsonResultDO();
         PageData pageData;
-        if (body instanceof PageInfo) {// PageHelper PageInfo 对象
+        if (body instanceof PageInfo) {
+            // PageHelper PageInfo 对象
             PageInfo<?> page = (PageInfo) body;
             pageData = new PageData();
             pageData.setContent(page.getList());
@@ -46,7 +55,8 @@ public class JSONResultAdvice implements ResponseBodyAdvice<Object> {
             pageData.setPageNum(page.getPageNum());
             pageData.setPageSize(page.getPageSize());
             result.setDatas(pageData);
-        } else if (body instanceof Page) {// PageHelper Page 对象
+        } else if (body instanceof Page) {
+            // PageHelper Page 对象
             Page<?> page = (Page) body;
             pageData = new PageData();
             pageData.setContent(page.getResult());
@@ -55,7 +65,8 @@ public class JSONResultAdvice implements ResponseBodyAdvice<Object> {
             pageData.setPageNum(page.getPageNum());
             pageData.setPageSize(page.getPageSize());
             result.setDatas(pageData);
-        } else if (body instanceof org.springframework.data.domain.Page) {// Spring data 对象
+        } else if (body instanceof org.springframework.data.domain.Page) {
+            // Spring data 对象
             org.springframework.data.domain.Page<?> page = (org.springframework.data.domain.Page) body;
             pageData = new PageData();
             pageData.setContent(page.getContent());

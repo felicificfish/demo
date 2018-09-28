@@ -9,30 +9,33 @@ import java.io.Serializable;
 import java.util.Locale;
 
 /**
- * 接口统一返回结构
+ * 返回结果
+ *
+ * @author zhou.xy
+ * @since 1.0.0
  */
 @Data
-public class JSONResultDO implements Serializable {
-    public static final JSONResultDO EMPTY_RESULT = new JSONResultDO();
+public class JsonResultDO implements Serializable {
+    public static final JsonResultDO EMPTY_RESULT = new JsonResultDO();
     private boolean success = true;
     private String msgCode;
     private Object[] arguments;
     private Object datas;
 
-    public JSONResultDO() {
+    public JsonResultDO() {
     }
 
-    public JSONResultDO(String msgcode) {
+    public JsonResultDO(String msgcode) {
         this.success = false;
         this.msgCode = msgcode;
     }
 
-    public JSONResultDO(boolean success, String msgcode) {
+    public JsonResultDO(boolean success, String msgCode) {
         this.success = success;
-        this.msgCode = msgcode;
+        this.msgCode = msgCode;
     }
 
-    public JSONResultDO(boolean success, String msgCode, Object[] arguments) {
+    public JsonResultDO(boolean success, String msgCode, Object[] arguments) {
         this.success = success;
         this.msgCode = msgCode;
         this.arguments = arguments;

@@ -27,10 +27,11 @@ public class MultithreadingService {
     private class HandlerProcess implements Runnable, Serializable {
         private List<String> names;
 
-        public HandlerProcess(List<String> names) {
+        HandlerProcess(List<String> names) {
             this.names = names;
         }
 
+        @Override
         public void run() {
             try {
                 for (String name : names) {

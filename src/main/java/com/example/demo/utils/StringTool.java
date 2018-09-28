@@ -6,7 +6,6 @@ import com.example.demo.configs.mapper.code.Style;
  * 字符串操作
  *
  * @author zhou.xy
- * @date 2018/9/21 13:37
  * @since 1.0
  */
 public class StringTool {

@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.example.demo.configs.api.JSONResultDO;
+import com.example.demo.configs.api.JsonResultDO;
 import com.example.demo.constant.Constants;
 import com.example.demo.model.Student1;
 import com.example.demo.model.Student2;
@@ -24,6 +24,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * HelloController
+ *
+ * @author zhou.xy
+ * @since 1.0.0
+ */
 @Log4j2
 @RestController
 public class HelloController {
@@ -47,8 +53,8 @@ public class HelloController {
     }
 
     @GetMapping(value = "getMsg")
-    public JSONResultDO getMsg() {
-        return new JSONResultDO(false, "error_msg");
+    public JsonResultDO getMsg() {
+        return new JsonResultDO(false, "error_msg");
     }
 
     @GetMapping(value = "multithreading")

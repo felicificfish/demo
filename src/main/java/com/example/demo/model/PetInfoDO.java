@@ -11,7 +11,6 @@ import java.util.Date;
  * 宠物信息
  *
  * @author zhou.xy
- * @date 2018/9/21 15:19
  * @since 1.0
  */
 @Data

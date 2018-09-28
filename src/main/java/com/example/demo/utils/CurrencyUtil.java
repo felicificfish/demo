@@ -4,7 +4,6 @@ package com.example.demo.utils;
  * 货币工具
  *
  * @author zhou.xy
- * @date 2018/9/20 17:34
  * @since 1.0
  */
 public class CurrencyUtil {
@@ -72,7 +71,8 @@ public class CurrencyUtil {
         // 输入字符串必须正整数，只允许前导空格(必须右对齐)，不宜有前导零
         StringBuilder rmbStr = new StringBuilder();
         boolean lastzero = false;
-        boolean hasvalue = false; // 亿、万进位前有数值标记
+        // 亿、万进位前有数值标记
+        boolean hasvalue = false;
         int len;
         int n;
         len = numStr.length();
@@ -89,26 +89,34 @@ public class CurrencyUtil {
             }
             if (n != 0) {
                 if (lastzero) {
-                    rmbStr.append(HanDigiStr[0]);// 若干零后若跟非零值，只显示一个零
+                    // 若干零后若跟非零值，只显示一个零
+                    rmbStr.append(HanDigiStr[0]);
                 }
                 // 除了亿万前的零不带到后面
                 // 如十进位前有零也不发壹音用此行
-                if (!(n == 1 && (i % 4) == 1 && i == len - 1)) { // 十进位处于第一位不发壹音
+                if (!(n == 1 && (i % 4) == 1 && i == len - 1)) {
+                    // 十进位处于第一位不发壹音
                     rmbStr.append(HanDigiStr[n]);
                 }
-                rmbStr.append(HanDiviStr[i]); // 非零值后加进位，个位为空
-                hasvalue = true; // 置万进位前有值标记
+                // 非零值后加进位，个位为空
+                rmbStr.append(HanDiviStr[i]);
+                // 置万进位前有值标记
+                hasvalue = true;
             } else {
-                if ((i % 8) == 0 || ((i % 8) == 4 && hasvalue)) // 亿万之间必须有非零值方显示万
-                    rmbStr.append(HanDiviStr[i]); // “亿”或“万”
+                if ((i % 8) == 0 || ((i % 8) == 4 && hasvalue)) {
+                    // 亿万之间必须有非零值方显示万 “亿”或“万”
+                    rmbStr.append(HanDiviStr[i]);
+                }
             }
             if (i % 8 == 0) {
-                hasvalue = false; // 万进位前有值标记逢亿复位
+                // 万进位前有值标记逢亿复位
+                hasvalue = false;
             }
             lastzero = (n == 0) && (i % 4 != 0);
         }
         if (rmbStr.length() == 0) {
-            return HanDigiStr[0]; // 输入空字符或"0"，返回"零"
+            // 输入空字符或"0"，返回"零"
+            return HanDigiStr[0];
         }
         return rmbStr.toString();
     }

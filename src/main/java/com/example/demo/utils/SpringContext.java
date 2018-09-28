@@ -15,6 +15,7 @@ public class SpringContext implements ApplicationContextAware {
     public SpringContext() {
     }
 
+    @Override
     public void setApplicationContext(ApplicationContext appContext) {
         if (null == applicationContext) {
             applicationContext = appContext;
