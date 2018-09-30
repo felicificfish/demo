@@ -59,6 +59,6 @@ public class CityCodeController {
         }
         content = content + JSON.toJSONString(cityDatas);
 
-        FileUtil.writeFile(content, "D:\\WORKS\\SR\\信e收", "e.js");
+        FileUtil.writeFile(content, "D:\\WORKS", "e.js");
     }
 }
