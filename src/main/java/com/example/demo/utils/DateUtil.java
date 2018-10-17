@@ -133,8 +133,20 @@ public class DateUtil {
         end.set(Calendar.MINUTE, 0);
         end.set(Calendar.SECOND, 0);
         end.set(Calendar.MILLISECOND, 0);
-        // 60 * 60 * 24 * 1000L
-        return (int) ((end.getTimeInMillis() - start.getTimeInMillis()) / 86400000L);
+        return (int) ((end.getTimeInMillis() - start.getTimeInMillis()) / (60 * 60 * 24 * 1000L));
     }
 
+    /**
+     * 根据日期获取星期
+     *
+     * @param date 日期
+     * @return 星期
+     */
+    public static String getWeekByDate(Date date) {
+        String[] weekDaysName = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int intWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        return weekDaysName[intWeek];
+    }
 }
