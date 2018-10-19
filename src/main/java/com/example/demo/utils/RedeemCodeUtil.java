@@ -1,6 +1,7 @@
 package com.example.demo.utils;
 
-import java.util.Random;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 兑换码生成工具
@@ -10,7 +11,7 @@ import java.util.Random;
  */
 public class RedeemCodeUtil {
     public static void main(String[] args) {
-        String st1 = createBigSmallLetterStrOrNumberRadom(8);
+        String st1 = createBigSmallLetterStrOrNum(8);
         String st2 = createSmallStrOrNumberRadom(8);
         String st3 = createBigStrOrNumberRadom(8);
         System.out.println(st1);
@@ -24,7 +25,7 @@ public class RedeemCodeUtil {
      * @param num 位数
      * @return String
      */
-    public static String createBigSmallLetterStrOrNumberRadom(int num) {
+    public static String createBigSmallLetterStrOrNum(int num) {
 
         String str = "";
         for (int i = 0; i < num; i++) {
@@ -80,5 +81,27 @@ public class RedeemCodeUtil {
             }
         }
         return str;
+    }
+
+    /**
+     * 生成len位的随机字符串集合(数字、大小写字母随机混排)
+     *
+     * @param history 历史集合
+     * @param count   生成数量
+     * @param len     字符串长度
+     * @return
+     */
+    public static Set<String> createBigSmallLetterStrOrNum(Set<String> history, int count, int len) {
+        Set<String> generatedCodes = new HashSet<String>(count * 4 / 3 + 1);
+        if (history == null) {
+            history = new HashSet<>(0);
+        }
+        while (generatedCodes.size() < count) {
+            String code = createBigSmallLetterStrOrNum(len);
+            if (!history.contains(code)) {
+                generatedCodes.add(code);
+            }
+        }
+        return generatedCodes;
     }
 }
