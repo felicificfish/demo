@@ -1,5 +1,7 @@
 package com.example.demo.utils;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,12 +13,13 @@ import java.util.Set;
  */
 public class RedeemCodeUtil {
     public static void main(String[] args) {
-        String st1 = createBigSmallLetterStrOrNum(8);
-        String st2 = createSmallStrOrNumberRadom(8);
-        String st3 = createBigStrOrNumberRadom(8);
-        System.out.println(st1);
-        System.out.println(st2);
-        System.out.println(st3);
+//        String st1 = createBigSmallLetterStrOrNum(8);
+//        String st2 = createSmallStrOrNumberRadom(8);
+//        String st3 = createBigStrOrNumberRadom(8);
+//        System.out.println(st1);
+//        System.out.println(st2);
+//        System.out.println(st3);
+        System.out.println(RandomStringUtils.random(8, true, true));
     }
 
     /**
@@ -26,7 +29,6 @@ public class RedeemCodeUtil {
      * @return String
      */
     public static String createBigSmallLetterStrOrNum(int num) {
-
         String str = "";
         for (int i = 0; i < num; i++) {
             int intVal = (int) (Math.random() * 58 + 65);
