@@ -6,8 +6,10 @@ import com.example.demo.constant.Constants;
 import com.example.demo.model.Student1;
 import com.example.demo.model.Student2;
 import com.example.demo.service.MultithreadingService;
+import com.example.demo.utils.WebUtil;
 import com.vdurmont.emoji.EmojiParser;
 import lombok.extern.log4j.Log4j2;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * HelloController
@@ -131,5 +135,13 @@ public class HelloController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @GetMapping(value = "getIp")
+    public Map<String, String> testIp(HttpServletRequest request) {
+        Map<String, String> ips = new HashMap<>();
+        ips.put("sweet", WebUtil.getRealIpAddr(request));
+        ips.put("mine", WebUtil.getIP(request));
+        return ips;
     }
 }

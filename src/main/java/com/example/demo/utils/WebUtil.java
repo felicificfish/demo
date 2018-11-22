@@ -17,7 +17,7 @@ public class WebUtil {
      * @param request 请求
      * @return IP地址
      */
-    private String getIP(HttpServletRequest request) {
+    public static String getIP(HttpServletRequest request) {
         String ipAddress = null;
         ipAddress = request.getHeader("x-forwarded-for");
         if (ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
@@ -36,11 +36,11 @@ public class WebUtil {
             ipAddress = request.getRemoteAddr();
             if ("127.0.0.1".equals(ipAddress) || "localhost".equals(ipAddress)) {
                 // 根据网卡取本机配置的IP
-                InetAddress inet;
+                InetAddress inetAddress;
                 try {
-                    inet = InetAddress.getLocalHost();
-                    if (null != inet) {
-                        ipAddress = inet.getHostAddress();
+                    inetAddress = InetAddress.getLocalHost();
+                    if (null != inetAddress) {
+                        ipAddress = inetAddress.getHostAddress();
                     }
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
@@ -56,5 +56,22 @@ public class WebUtil {
             }
         }
         return ipAddress;
+    }
+
+    public static String getRealIpAddr(HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+
+        return ip == null ? "" : ip;
     }
 }
