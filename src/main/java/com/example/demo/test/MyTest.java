@@ -36,6 +36,8 @@ public class MyTest {
         log.info(numberPattern.matcher("BIND2").replaceAll(""));
 
         lottery();
+
+        doBatch();
     }
 
     public enum OptTypeEnum {
@@ -94,6 +96,32 @@ public class MyTest {
             int index = LotteryUtil.lottery(list);
             log.info(JSON.toJSONString(list.get(index)));
         }
+    }
 
+    private static void doBatch() {
+        List<String> dataList = new ArrayList<>();
+        dataList.add("11");
+        dataList.add("22");
+        dataList.add("33");
+        dataList.add("44");
+        dataList.add("55");
+        dataList.add("66");
+        dataList.add("77");
+        dataList.add("88");
+        dataList.add("99");
+
+        // 分批插入数据库
+        int limitSize = 2;
+        int size = dataList.size();
+        if (size > limitSize) {
+            int batch = size / limitSize;
+            for (int i = 0; i < batch; i++) {
+                System.out.println("第" + (i + 1) + "批：" + dataList.subList(0, limitSize));
+                dataList.subList(0, limitSize).clear();
+            }
+        }
+        if (!dataList.isEmpty()) {
+            System.out.println("剩下的：" + dataList);
+        }
     }
 }
