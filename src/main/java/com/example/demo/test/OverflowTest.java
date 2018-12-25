@@ -9,6 +9,12 @@ import java.util.ArrayList;
  * @since 1.0.0
  */
 public class OverflowTest {
+    public void testHeap() {
+        for (; ; ) {
+            ArrayList list = new ArrayList(2000);
+        }
+    }
+
     int num = 1;
 
     public static void main(String[] args) {
@@ -17,15 +23,7 @@ public class OverflowTest {
 //        t.testStack();
     }
 
-    public void testHeap() {
-        for (; ; ) {
-            ArrayList list = new ArrayList(2000);
-        }
-    }
-
-    public void
-
-    testStack() {
+    public void testStack() {
         num++;
         this.testStack();
     }
