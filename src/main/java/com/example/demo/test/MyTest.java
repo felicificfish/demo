@@ -5,9 +5,7 @@ import com.example.demo.model.GiftDO;
 import com.example.demo.utils.LotteryUtil;
 import lombok.extern.log4j.Log4j2;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -21,21 +19,21 @@ public class MyTest {
     private static Pattern numberPattern = Pattern.compile("[0-9]+");
 
     public static void main(String[] args) {
-        String str = "data:image/png;base64,iVBORw0KGgoAAAANSU";
-        String str2 = str.replaceFirst("data:image/\\S*;base64,", "");
-        log.info(str);
-        log.info(str2);
-
-        Long a = 123L;
-        String b = "123";
-        log.info(b.equals(a.toString()));
-        log.info(Objects.equals(a, b));
-
-        log.info(OptTypeEnum.getByCode("BIND2".replaceAll("\\d+", "")).getMsg());
-
-        log.info(numberPattern.matcher("BIND2").replaceAll(""));
-
-        lottery();
+//        String str = "data:image/png;base64,iVBORw0KGgoAAAANSU";
+//        String str2 = str.replaceFirst("data:image/\\S*;base64,", "");
+//        log.info(str);
+//        log.info(str2);
+//
+//        Long a = 123L;
+//        String b = "123";
+//        log.info(b.equals(a.toString()));
+//        log.info(Objects.equals(a, b));
+//
+//        log.info(OptTypeEnum.getByCode("BIND2".replaceAll("\\d+", "")).getMsg());
+//
+//        log.info(numberPattern.matcher("BIND2").replaceAll(""));
+//
+//        lottery();
 
         doBatch();
     }
@@ -109,19 +107,36 @@ public class MyTest {
         dataList.add("77");
         dataList.add("88");
         dataList.add("99");
+        dataList.add("00");
+        dataList.add("01");
+        dataList.add("02");
+        dataList.add("03");
+        dataList.add("04");
 
         // 分批插入数据库
-        int limitSize = 2;
+        int limitSize = 4;
         int size = dataList.size();
-        if (size > limitSize) {
-            int batch = size / limitSize;
-            for (int i = 0; i < batch; i++) {
-                System.out.println("第" + (i + 1) + "批：" + dataList.subList(0, limitSize));
-                dataList.subList(0, limitSize).clear();
-            }
+//        if (size > limitSize) {
+//            int batch = size / limitSize;
+//            for (int i = 0; i < batch; i++) {
+//                System.out.println("第" + (i + 1) + "批：" + dataList.subList(0, limitSize));
+//                dataList.subList(0, limitSize).clear();
+//            }
+//        }
+//        if (!dataList.isEmpty()) {
+//            System.out.println("剩下的：" + dataList);
+//        }
+
+        int batchNos = size % limitSize == 0 ? size / limitSize : (size / limitSize) + 1;
+        Map<String, List<String>> datas = new HashMap<>();
+        int startIndex = 0;
+        int stopIndex = 0;
+        for (int i = 0; i < batchNos; i++) {
+            stopIndex = (i == batchNos - 1) ? size : stopIndex + limitSize;
+            List<String> tempList = new ArrayList<>(dataList.subList(startIndex, stopIndex));
+            datas.put(String.valueOf(i), tempList);
+            startIndex = stopIndex;
         }
-        if (!dataList.isEmpty()) {
-            System.out.println("剩下的：" + dataList);
-        }
+        System.out.println(datas);
     }
 }
