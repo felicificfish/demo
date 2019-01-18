@@ -1,8 +1,14 @@
 package com.example.demo.controller;
 
+import com.dingtalk.api.DefaultDingTalkClient;
+import com.dingtalk.api.DingTalkClient;
+import com.dingtalk.api.request.OapiRobotSendRequest;
+import com.dingtalk.api.response.OapiRobotSendResponse;
 import com.dingtalk.chatbot.DingtalkChatbotClient;
 import com.dingtalk.chatbot.SendResult;
 import com.dingtalk.chatbot.message.*;
+import com.taobao.api.ApiException;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -190,6 +196,45 @@ public class DingController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return  result;
+        return result;
+    }
+
+    @GetMapping(value = "/ding/mytest")
+    public void testMarkdownAt() {
+        DingTalkClient client = new DefaultDingTalkClient(WEBHOOK);
+        OapiRobotSendRequest request = new OapiRobotSendRequest();
+//        request.setMsgtype("text");
+//        OapiRobotSendRequest.Text text = new OapiRobotSendRequest.Text();
+//        text.setContent("测试文本消息");
+//        request.setText(text);
+//        OapiRobotSendRequest.At at = new OapiRobotSendRequest.At();
+//        at.setAtMobiles(Arrays.asList("18693156007"));
+//        request.setAt(at);
+
+//        request.setMsgtype("link");
+//        OapiRobotSendRequest.Link link = new OapiRobotSendRequest.Link();
+//        link.setMessageUrl("https://mp.weixin.qq.com/");
+//        link.setPicUrl("");
+//        link.setTitle("时代的火车向前开");
+//        link.setText("这个即将发布的新版本，创始人陈航（花名“无招”）称它为“红树林”。\n" +
+//                "而在此之前，每当面临重大升级，产品经理们都会取一个应景的代号，这一次，为什么是“红树林");
+//        request.setLink(link);
+
+        request.setMsgtype("markdown");
+        OapiRobotSendRequest.Markdown markdown = new OapiRobotSendRequest.Markdown();
+        markdown.setTitle("杭州天气");
+        markdown.setText("#### 杭州天气 @18693156007\n" +
+                "> 9度，西北风1级，空气良89，相对温度73%\n\n" +
+                "> ![screenshot](https://gw.alipayobjects.com/zos/skylark-tools/public/files/84111bbeba74743d2771ed4f062d1f25.png)\n" +
+                "> ###### 10点20分发布 [天气](http://www.thinkpage.cn/) \n");
+        request.setMarkdown(markdown);
+        OapiRobotSendRequest.At at = new OapiRobotSendRequest.At();
+        at.setAtMobiles(Arrays.asList("18693156007"));
+        request.setAt(at);
+        try {
+            OapiRobotSendResponse response = client.execute(request);
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
     }
 }
