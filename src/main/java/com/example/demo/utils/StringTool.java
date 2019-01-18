@@ -137,6 +137,31 @@ public class StringTool {
         return stringBuffer.toString();
     }
 
+    /**
+     * 敏感信息隐藏
+     *
+     * @param originalStr 源字符串
+     * @param replaceChar 替换字符
+     * @param left        左侧保留位数
+     * @param right       右侧保留位数
+     * @return
+     */
+    public static String hideKeyword(String originalStr, String replaceChar, int left, int right) {
+        if (!StringUtils.hasText(originalStr)) {
+            return null;
+        }
+        if (originalStr.length() <= (left + right)) {
+            return originalStr;
+        }
+        int len = originalStr.length() - left - right;
+        StringBuilder replace = new StringBuilder();
+        for (int i = 0; i < len; i++) {
+            replace.append(replaceChar);
+        }
+        originalStr = originalStr.substring(0, left) + replace.toString() + originalStr.substring(left + len);
+        return originalStr;
+    }
+
     public static void main(String[] args) {
         System.out.println(replaceWithChar("6228480323012183510", "*", 3, null));
         System.out.println(replaceWithChar("6228480323012183510", "*", 3, 4));
@@ -146,5 +171,7 @@ public class StringTool {
 
         String name = "千里共婵娟";
         System.out.println(name.replaceAll("([\\u4e00-\\u9fa5]{1})(.*)", "$1" + createAsterisk(name.length() - 1)));
+
+        System.out.println(hideKeyword("千里共婵娟", "*", 1, 0));
     }
 }
