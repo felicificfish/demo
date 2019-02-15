@@ -3,8 +3,10 @@ package com.example.demo.test;
 import com.alibaba.fastjson.JSON;
 import com.example.demo.model.GiftDO;
 import com.example.demo.utils.LotteryUtil;
+import com.example.demo.utils.NumberToCN;
 import lombok.extern.log4j.Log4j2;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -35,7 +37,10 @@ public class MyTest {
 //
 //        lottery();
 
-        doBatch();
+//        doBatch();
+
+        System.out.println(NumberToCN.number2CNMontrayUnit(BigDecimal.valueOf(12323324.2323)));
+        System.out.println(NumberToCN.formatCNDecimal(BigDecimal.valueOf(12323324.2323)));
     }
 
     public enum OptTypeEnum {
