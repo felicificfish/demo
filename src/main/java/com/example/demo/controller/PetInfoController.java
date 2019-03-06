@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * 宠物信息Controller
@@ -63,5 +64,21 @@ public class PetInfoController {
                 log.error(e.getMessage());
             }
         }
+    }
+
+    @GetMapping("addPet")
+    public void addPetInfo(String nickname) {
+        PetInfoDO petInfoDO = new PetInfoDO();
+        petInfoDO.setNickname(nickname);
+        petInfoDO.setCtime(new Date());
+        petInfoService.addPetInfo(petInfoDO);
+    }
+
+    @GetMapping("updatePet")
+    public void addPetInfo(Long id, String nickname) {
+        PetInfoDO petInfoDO = new PetInfoDO();
+        petInfoDO.setNickname(nickname);
+        petInfoDO.setId(id);
+        petInfoService.updatePetInfo(petInfoDO);
     }
 }

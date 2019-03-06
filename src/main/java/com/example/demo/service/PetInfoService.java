@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.example.demo.configs.mapper.entity.Example;
 import com.example.demo.dao.PetInfoMapper;
 import com.example.demo.model.PetInfoDO;
-import com.example.demo.model.PetInfoVO;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,5 +34,13 @@ public class PetInfoService {
 
     public List<PetInfoDO> queryAll() {
         return petInfoMapper.selectAll();
+    }
+
+    public int addPetInfo(PetInfoDO petInfoDO) {
+        return petInfoMapper.insertPet(petInfoDO);
+    }
+
+    public int updatePetInfo(PetInfoDO petInfoDO) {
+        return petInfoMapper.updatePet(petInfoDO);
     }
 }

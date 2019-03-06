@@ -11,4 +11,7 @@ import com.example.demo.model.PetInfoDO;
  */
 public interface PetInfoMapper extends BaseMapper<PetInfoDO> {
 
+    int insertPet(PetInfoDO petInfoDO);
+
+    int updatePet(PetInfoDO petInfoDO);
 }
