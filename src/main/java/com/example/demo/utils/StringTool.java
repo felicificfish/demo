@@ -3,6 +3,9 @@ package com.example.demo.utils;
 import com.example.demo.configs.mapper.code.Style;
 import org.springframework.util.StringUtils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * 字符串操作
  *
@@ -160,6 +163,47 @@ public class StringTool {
         }
         originalStr = originalStr.substring(0, left) + replace.toString() + originalStr.substring(left + len);
         return originalStr;
+    }
+
+    /**
+     * 定义script的正则表达式
+     */
+    private static final String regEx_script = "<script[^>]*?>[\\s\\S]*?<\\/script>";
+    /**
+     * 定义style的正则表达式
+     */
+    private static final String regEx_style = "<style[^>]*?>[\\s\\S]*?<\\/style>";
+    /**
+     * 定义HTML标签的正则表达式
+     */
+    private static final String regEx_html = "<[^>]+>";
+    /**
+     * 定义空格回车换行符
+     */
+    private static final String regEx_space = "\\s*|\t|\r|\n";
+
+    public static String clearHTML(String htmlStr) {
+        Pattern p_script = Pattern.compile(regEx_script, Pattern.CASE_INSENSITIVE);
+        Matcher m_script = p_script.matcher(htmlStr);
+        // 过滤script标签
+        htmlStr = m_script.replaceAll("");
+
+        Pattern p_style = Pattern.compile(regEx_style, Pattern.CASE_INSENSITIVE);
+        Matcher m_style = p_style.matcher(htmlStr);
+        // 过滤style标签
+        htmlStr = m_style.replaceAll("");
+
+        Pattern p_html = Pattern.compile(regEx_html, Pattern.CASE_INSENSITIVE);
+        Matcher m_html = p_html.matcher(htmlStr);
+        // 过滤html标签
+        htmlStr = m_html.replaceAll("");
+
+        Pattern p_space = Pattern.compile(regEx_space, Pattern.CASE_INSENSITIVE);
+        Matcher m_space = p_space.matcher(htmlStr);
+        // 过滤空格回车标签
+        htmlStr = m_space.replaceAll("").replaceAll("&nbsp;", "");
+        // 返回文本字符串
+        return htmlStr.trim();
     }
 
     public static void main(String[] args) {
