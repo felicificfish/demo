@@ -3,9 +3,12 @@ package com.example.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.example.demo.configs.api.JsonResultDO;
 import com.example.demo.constant.Constants;
+import com.example.demo.model.RedPackageDO;
 import com.example.demo.model.Student1;
 import com.example.demo.model.Student2;
 import com.example.demo.service.MultithreadingService;
+import com.example.demo.utils.RedPackageUtil;
+import com.example.demo.utils.RedisTemplateUtil;
 import com.example.demo.utils.WebUtil;
 import com.vdurmont.emoji.EmojiParser;
 import lombok.extern.log4j.Log4j2;
@@ -30,10 +33,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * HelloController
@@ -220,5 +220,23 @@ public class HelloController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @GetMapping("redPackage")
+    public List<Double> getRandomMoney(Integer size, Double money) {
+        RedisTemplateUtil.delete("redPackage");
+        List<Double> list = new ArrayList<>();
+        double total = 0;
+        for (int i = 0; i < size; i++) {
+            RedPackageDO redPackageDO = RedisTemplateUtil.get("redPackage");
+            if (null == redPackageDO) {
+                redPackageDO = new RedPackageDO(size, money);
+            }
+            double randomMoney = RedPackageUtil.getRandomMoney(redPackageDO);
+            list.add(randomMoney);
+            total += randomMoney;
+        }
+        list.add(total);
+        return list;
     }
 }
