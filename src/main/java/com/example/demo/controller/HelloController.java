@@ -222,6 +222,56 @@ public class HelloController {
         }
     }
 
+    @GetMapping("dynamic/export2")
+    public void dynamicColumnExport2(HttpServletResponse response) {
+        try {
+            List<ExcelExportEntity> colList = new ArrayList<ExcelExportEntity>();
+            ExcelExportEntity colEntity = new ExcelExportEntity("商品名称", "title");
+            colList.add(colEntity);
+
+            colEntity = new ExcelExportEntity("供应商", "supplier");
+            colList.add(colEntity);
+
+            colEntity = new ExcelExportEntity("市场价", "orgPrice");
+            colList.add(colEntity);
+
+            List<String> suppliers = new ArrayList<>();
+            for (int i = 0; i < 5; i++) {
+                suppliers.add("供应商." + i);
+            }
+            List<String> orgPrices = new ArrayList<>();
+            for (int i = 0; i < 7; i++) {
+                orgPrices.add("市场价." + i);
+            }
+            List<Map<String, Object>> list = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                Map<String, Object> valMap = new HashMap<>();
+                valMap.put("title", "名称." + i);
+                if (i < suppliers.size()) {
+                    valMap.put("supplier", suppliers.get(i));
+                }
+                if (i < orgPrices.size()) {
+                    valMap.put("orgPrice", orgPrices.get(i));
+                }
+                list.add(valMap);
+            }
+
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("application/x-download");
+            String fileName = URLEncoder.encode("价格分析表.xls", "UTF-8");
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("价格分析表", "数据"),
+                    colList, list);
+            OutputStream fos = response.getOutputStream();
+            workbook.write(fos);
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @GetMapping("redPackage")
     public List<Double> getRandomMoney(Integer size, Double money) {
         RedisTemplateUtil.delete("redPackage");
