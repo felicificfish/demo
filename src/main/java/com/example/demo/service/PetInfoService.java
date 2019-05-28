@@ -36,6 +36,10 @@ public class PetInfoService {
         return petInfoMapper.selectAll();
     }
 
+    public List<PetInfoDO> query(PetInfoDO petInfoDO) {
+        return petInfoMapper.selectByCondition(petInfoDO);
+    }
+
     public int addPetInfo(PetInfoDO petInfoDO) {
         return petInfoMapper.insertPet(petInfoDO);
     }

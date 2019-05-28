@@ -19,6 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 宠物信息Controller
@@ -80,5 +81,10 @@ public class PetInfoController {
         petInfoDO.setNickname(nickname);
         petInfoDO.setId(id);
         petInfoService.updatePetInfo(petInfoDO);
+    }
+
+    @GetMapping("petList")
+    public List<PetInfoDO> petList(PetInfoDO petInfoDO) {
+        return petInfoService.query(petInfoDO);
     }
 }

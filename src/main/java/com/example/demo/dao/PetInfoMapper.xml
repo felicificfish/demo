@@ -14,4 +14,14 @@
     <update id="updatePet" parameterType="com.example.demo.model.PetInfoDO">
         UPDATE pet_info set nickname = #{nickname} WHERE id = #{id}
     </update>
+
+    <select id="selectByCondition" parameterType="com.example.demo.model.PetInfoDO"
+            resultType="com.example.demo.model.PetInfoDO">
+        select * from pet_info
+        <where>
+            <if test="@OGNL@isNotEmpty(nickname)">
+                nickname = #{nickname}
+            </if>
+        </where>
+    </select>
 </mapper>
