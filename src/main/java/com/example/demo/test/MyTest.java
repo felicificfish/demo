@@ -1,12 +1,24 @@
 package com.example.demo.test;
 
 import com.alibaba.fastjson.JSON;
+import com.dingtalk.api.DefaultDingTalkClient;
+import com.dingtalk.api.DingTalkClient;
+import com.dingtalk.api.request.*;
+import com.dingtalk.api.response.*;
 import com.example.demo.model.GiftDO;
 import com.example.demo.utils.LotteryUtil;
 import com.example.demo.utils.NumberToCN;
+import com.taobao.api.ApiException;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 
+import javax.net.ssl.HttpsURLConnection;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -20,7 +32,11 @@ import java.util.regex.Pattern;
 public class MyTest {
     private static Pattern numberPattern = Pattern.compile("[0-9]+");
 
-    public static void main(String[] args) {
+    public static String APPKEY = "dingelo3ls1dell6dgp2";
+    public static String APPSECRET ="rurp5fo_Dnp89I5RQD-XAliE-a4SsCT3UUmQ-0CgzF59MWzUF83l5ZIzEQeZef6W";
+    public static Long AGENTID = 270192478L;
+
+    public static void main(String[] args) throws Exception {
 //        String str = "data:image/png;base64,iVBORw0KGgoAAAANSU";
 //        String str2 = str.replaceFirst("data:image/\\S*;base64,", "");
 //        log.info(str);
@@ -39,8 +55,190 @@ public class MyTest {
 
 //        doBatch();
 
-        System.out.println(NumberToCN.number2CNMontrayUnit(BigDecimal.valueOf(12323324.2323)));
-        System.out.println(NumberToCN.formatCNDecimal(BigDecimal.valueOf(12323324.2323)));
+//        System.out.println(NumberToCN.number2CNMontrayUnit(BigDecimal.valueOf(12323324.2323)));
+//        System.out.println(NumberToCN.formatCNDecimal(BigDecimal.valueOf(12323324.2323)));
+        //发送消息
+//        String content = "{"
+//                + "\"touser\": \"manager5937\","//发送用户ID，多个用,分割
+//                + "\"toparty\": \"\","//发送部门ID，多个用,分割
+//                + "\"agentid\": \""+"270146573"+"\","
+//                + "\"msgtype\": \"text\","
+//                + "\"text\": {\"content\": \"***(用户姓名) 电话***(用户电话)，在***(预约单创建时间)提交了预约申请，预约金额为***，请及时跟进。\"}"
+//                + "}";
+//        String url = "https://oapi.dingtalk.com/message/send?access_token="+getToken();
+//        String rt = httpsRequest(url, "GET", content);
+//        System.out.println(rt);
+
+//        String roles = getRoles();
+//        log.info(roles);
+
+//        log.info(getManagerRoleId());
+
+//        log.info(getDepartmentUser());
+
+//        log.info(getDepartmentUserDetail());
+
+        sendWorkMarkdownMsg("客户预约通知", "诸葛亮 电话13811112356，在2019-06-14 18:57:20提交了预约申请，预约金额为2000万元，请及时跟进。", "130534255921758252");
+    }
+
+    public static String getToken() throws RuntimeException {
+        try {
+            DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/gettoken");
+            OapiGettokenRequest request = new OapiGettokenRequest();
+
+            request.setAppkey(APPKEY);
+            request.setAppsecret(APPSECRET);
+            request.setHttpMethod("GET");
+            OapiGettokenResponse response = client.execute(request);
+            String accessToken = response.getAccessToken();
+            return accessToken;
+        } catch (ApiException e) {
+            log.error("getAccessToken failed", e);
+            throw new RuntimeException();
+        }
+
+    }
+
+    public static String getRoles() throws ApiException {
+        DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/role/list");
+        OapiRoleListRequest request = new OapiRoleListRequest();
+        request.setOffset(0L);
+        request.setSize(10L);
+
+        OapiRoleListResponse response = client.execute(request, getToken());
+        return JSON.toJSONString(response);
+    }
+
+    public static String getManagerRoleId() throws ApiException {
+        DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/role/simplelist");
+        OapiRoleSimplelistRequest request = new OapiRoleSimplelistRequest();
+        request.setRoleId(459467150L);
+        request.setOffset(0L);
+        request.setSize(10L);
+
+        OapiRoleSimplelistResponse response = client.execute(request, getToken());
+        return JSON.toJSONString(response);
+    }
+
+    public static String getDepartmentUser() throws ApiException {
+        DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/simplelist");
+        OapiUserSimplelistRequest request = new OapiUserSimplelistRequest();
+        request.setDepartmentId(1L);
+        request.setOffset(0L);
+        request.setSize(10L);
+        request.setHttpMethod("GET");
+
+        OapiUserSimplelistResponse response = client.execute(request, getToken());
+        return JSON.toJSONString(response);
+    }
+
+    public static String getDepartmentUserDetail() throws ApiException {
+        DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/listbypage");
+        OapiUserListbypageRequest request = new OapiUserListbypageRequest();
+        request.setDepartmentId(1L);
+        request.setOffset(0L);
+        request.setSize(10L);
+        request.setOrder("entry_desc");
+        request.setHttpMethod("GET");
+        OapiUserListbypageResponse response = client.execute(request,getToken());
+        return JSON.toJSONString(response);
+    }
+
+    private static String httpsRequest(String requestUrl, String requestMethod, String outputStr) throws Exception {
+          HttpsURLConnection conn = null;
+          BufferedReader bufferedReader = null;
+          try {
+              URL url = new URL(requestUrl);
+              conn = (HttpsURLConnection) url.openConnection();
+              conn.setDoOutput(true);
+              conn.setDoInput(true);
+              conn.setUseCaches(false);
+              conn.setRequestMethod(requestMethod);
+              conn.setRequestProperty("content-type", "application/json");
+              if (null != outputStr) {
+                   OutputStream outputStream = conn.getOutputStream();
+                   outputStream.write(outputStr.getBytes("utf-8"));
+                   outputStream.close();
+              }
+              bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+              String str = null;
+              StringBuffer buffer = new StringBuffer();
+              while ((str = bufferedReader.readLine()) != null) {
+                   buffer.append(str);
+              }
+              return buffer.toString();
+          } catch (Exception e) {
+              throw e;
+          } finally {
+              if (conn != null) {
+                   conn.disconnect();
+              }
+              if (bufferedReader != null) {
+                   try {
+                        bufferedReader.close();
+                   } catch (IOException e) {
+
+                   }
+              }
+          }
+     }
+
+    /**
+     * 发送工作通知消息
+     *
+     * @param content
+     * @param userIdList 可选	接收者的用户userid列表，最大列表长度：100，多个以英文半角逗号隔开，如：zhangsan,lisi
+     */
+    public static void sendWorkMsg(String content, String userIdList) {
+        if (StringUtils.isEmpty(userIdList)) {
+            return;
+        }
+        //发送消息
+        DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
+        OapiMessageCorpconversationAsyncsendV2Request request = new OapiMessageCorpconversationAsyncsendV2Request();
+        request.setUseridList(userIdList);
+        request.setAgentId(AGENTID);
+        request.setToAllUser(false);
+        OapiMessageCorpconversationAsyncsendV2Request.Msg msg = new OapiMessageCorpconversationAsyncsendV2Request.Msg();
+        msg.setMsgtype("text");
+        OapiMessageCorpconversationAsyncsendV2Request.Text text = new OapiMessageCorpconversationAsyncsendV2Request.Text();
+        text.setContent(content);
+        msg.setText(text);
+        request.setMsg(msg);
+        try {
+            OapiMessageCorpconversationAsyncsendV2Response response = client.execute(request, getToken());
+            if (null == response || response.getErrcode() != 0) {
+                log.error("Ding talk sent work msg failed! userIdList:{}, content:{}", userIdList, content);
+            }
+        } catch (ApiException e) {
+            log.error("Ding talk sent work msg error! error:{} userIdList:{}, content:{}", e, userIdList, content);
+        }
+    }
+
+    public static void sendWorkMarkdownMsg(String title, String content, String userIdList) {
+        if (StringUtils.isEmpty(userIdList)) {
+            return;
+        }
+        //发送消息
+        DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
+        OapiMessageCorpconversationAsyncsendV2Request request = new OapiMessageCorpconversationAsyncsendV2Request();
+        request.setUseridList(userIdList);
+        request.setAgentId(AGENTID);
+        request.setToAllUser(false);
+        OapiMessageCorpconversationAsyncsendV2Request.Msg msg = new OapiMessageCorpconversationAsyncsendV2Request.Msg();
+        msg.setMsgtype("markdown");
+        msg.setMarkdown(new OapiMessageCorpconversationAsyncsendV2Request.Markdown());
+        msg.getMarkdown().setText(content);
+        msg.getMarkdown().setTitle(title);
+        request.setMsg(msg);
+        try {
+            OapiMessageCorpconversationAsyncsendV2Response response = client.execute(request, getToken());
+            if (null == response || response.getErrcode() != 0) {
+                log.error("Ding talk sent work msg failed! userIdList:{}, content:{}", userIdList, content);
+            }
+        } catch (ApiException e) {
+            log.error("Ding talk sent work msg error! error:{} userIdList:{}, content:{}", e, userIdList, content);
+        }
     }
 
     public enum OptTypeEnum {
