@@ -20,6 +20,7 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 /**
@@ -32,9 +33,9 @@ import java.util.regex.Pattern;
 public class MyTest {
     private static Pattern numberPattern = Pattern.compile("[0-9]+");
 
-    public static String APPKEY = "dingelo3ls1dell6dgp2";
-    public static String APPSECRET ="rurp5fo_Dnp89I5RQD-XAliE-a4SsCT3UUmQ-0CgzF59MWzUF83l5ZIzEQeZef6W";
-    public static Long AGENTID = 270192478L;
+    public static String APPKEY = "";
+    public static String APPSECRET ="";
+    public static Long AGENTID = 0L;
 
     public static void main(String[] args) throws Exception {
 //        String str = "data:image/png;base64,iVBORw0KGgoAAAANSU";
@@ -78,7 +79,10 @@ public class MyTest {
 
 //        log.info(getDepartmentUserDetail());
 
-        sendWorkMarkdownMsg("客户预约通知", "诸葛亮 电话13811112356，在2019-06-14 18:57:20提交了预约申请，预约金额为2000万元，请及时跟进。", "130534255921758252");
+//        sendWorkMarkdownMsg("客户预约通知", "诸葛亮 电话13811112356，在2019-06-14 18:57:20提交了预约申请，预约金额为2000万元，请及时跟进。", "130534255921758252");
+
+//        getCheckInRecord();
+        workRecord();
     }
 
     public static String getToken() throws RuntimeException {
@@ -241,7 +245,47 @@ public class MyTest {
         }
     }
 
-    public enum OptTypeEnum {
+    public static void getCheckInRecord() {
+        DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/checkin/record");
+        OapiCheckinRecordRequest request = new OapiCheckinRecordRequest();
+        request.setDepartmentId("1");
+        request.setStartTime(System.currentTimeMillis()- TimeUnit.DAYS.toMillis(1));
+        request.setEndTime(System.currentTimeMillis());
+        request.setOffset(0L);
+        request.setOrder("asc");
+        request.setSize(100L);
+        request.setHttpMethod("GET");
+        try {
+            OapiCheckinRecordResponse response = client.execute(request, getToken());
+            log.info(JSON.toJSONString(response));
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void workRecord() {
+        DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/workrecord/add");
+        OapiWorkrecordAddRequest req = new OapiWorkrecordAddRequest();
+        req.setUserid("130534255921758252");
+        req.setCreateTime(System.currentTimeMillis());
+        req.setTitle("请处理");
+        req.setUrl("https://oa.dingtalk.com");
+        List<OapiWorkrecordAddRequest.FormItemVo> list2 = new ArrayList<OapiWorkrecordAddRequest.FormItemVo>();
+        OapiWorkrecordAddRequest.FormItemVo obj3 = new OapiWorkrecordAddRequest.FormItemVo();
+        list2.add(obj3);
+        obj3.setTitle("标题");
+        obj3.setContent("内容");
+        req.setFormItemList(list2);
+        OapiWorkrecordAddResponse rsp = null;
+        try {
+            rsp = client.execute(req, getToken());
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+        System.out.println(rsp.getBody());
+    }
+
+  public enum OptTypeEnum {
         OPT_UNBIND("UNBIND", "您已存在解绑操作"),
         OPT_BIND("BIND", "您已存在绑卡操作"),
         OPT_CHANGE("CHANGE", "您已存在换卡操作");
