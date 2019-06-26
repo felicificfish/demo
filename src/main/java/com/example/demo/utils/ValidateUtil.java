@@ -91,6 +91,18 @@ public class ValidateUtil {
     }
 
     /**
+     * 校验URL
+     * @param url
+     * @return
+     */
+    public static boolean isUrl(String url) {
+        if (isEmpty(url)) {
+            return false;
+        }
+        return Patterns.WEB_URL.matcher(url).matches();
+    }
+
+    /**
      * 校验固话
      *
      * @param telephone 固话
