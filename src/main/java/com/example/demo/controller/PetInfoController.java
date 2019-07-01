@@ -5,7 +5,9 @@ import com.example.demo.model.PetInfoVO;
 import com.example.demo.service.PetInfoService;
 import com.example.demo.utils.ExcelExportUtil;
 import com.example.demo.utils.FileUtil;
+import com.example.demo.utils.SqlMapper;
 import lombok.extern.log4j.Log4j2;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.enmus.ExcelType;
@@ -32,12 +34,20 @@ import java.util.List;
 public class PetInfoController {
     @Autowired
     private PetInfoService petInfoService;
+    @Autowired
+    private SqlSession sqlSession;
 
     @GetMapping(value = "petInfo")
     public PetInfoDO petInfo() {
         PetInfoDO petInfo = new PetInfoDO();
         petInfo.setId(1L);
         return petInfoService.queryPet(petInfo);
+    }
+
+    @GetMapping(value = "petInfoOne")
+    public PetInfoDO petInfoOne() {
+        SqlMapper sqlExcutor = new SqlMapper(sqlSession);
+        return sqlExcutor.selectOne("select * from pet_info limit 1", PetInfoDO.class);
     }
 
     /**

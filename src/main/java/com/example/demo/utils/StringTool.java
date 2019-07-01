@@ -30,6 +30,25 @@ public class StringTool {
         return c;
     }
 
+    public static String underlineToCamelhump(String str) {
+        if (!StringUtils.hasText(str)) {
+            return str;
+        } else {
+            Matcher matcher = Pattern.compile("_[a-z]").matcher(str.toLowerCase());
+            StringBuilder builder = new StringBuilder(str);
+
+            for(int i = 0; matcher.find(); ++i) {
+                builder.replace(matcher.start() - i, matcher.end() - i, matcher.group().substring(1).toUpperCase());
+            }
+
+            if (Character.isUpperCase(builder.charAt(0))) {
+                builder.replace(0, 1, String.valueOf(Character.toLowerCase(builder.charAt(0))));
+            }
+
+            return builder.toString();
+        }
+    }
+
     public static String camelhumpToUnderline(String str) {
         int size;
         char[] chars = str.toCharArray();
