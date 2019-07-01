@@ -20,6 +20,9 @@ public class MonthReport {
         BigDecimal sex1 = obj.getBigDecimal("sex1");
         BigDecimal sex2 = obj.getBigDecimal("sex2");
         BigDecimal total = sex1.add(sex2);
+        if (null == total || BigDecimal.ZERO.compareTo(total) == 0) {
+            total = BigDecimal.ONE;
+        }
         BigDecimal sex1Percent = sex1.multiply(BigDecimal.valueOf(100)).divide(total, 4, BigDecimal.ROUND_HALF_UP);
         BigDecimal sex2Percent = sex2.multiply(BigDecimal.valueOf(100)).divide(total, 4, BigDecimal.ROUND_HALF_UP);
         log.info(sex1Percent + " | " + sex2Percent);
@@ -42,11 +45,11 @@ public class MonthReport {
     }
 
     public static void main(String[] args) {
-        String sex = "{\"sex1\":632.00,\"sex2\":1459.00}";
+        String sex = "{\"sex1\":0.00,\"sex2\":0.00}";
         sexData(sex);
-        String age = "[{\"num\":626,\"type\":1},{\"num\":532,\"type\":2},{\"num\":272,\"type\":3},{\"num\":21,\"type\":4},{\"num\":653,\"type\":5}]";
+        String age = "[{\"num\":0,\"type\":1},{\"num\":0,\"type\":2},{\"num\":0,\"type\":3},{\"num\":0,\"type\":4},{\"num\":0,\"type\":5}]";
         ageData(age);
-        String term = "[{\"num\":175215100.00,\"type\":1},{\"num\":13326000.00,\"type\":2},{\"num\":0.00,\"type\":3},{\"num\":0.00,\"type\":4},{\"num\":12231000.00,\"type\":5}]";
+        String term = "[{\"num\":0.00,\"type\":1},{\"num\":0.00,\"type\":2},{\"num\":0.00,\"type\":3},{\"num\":0.00,\"type\":4},{\"num\":0.00,\"type\":5}]";
         termData(term);
     }
 
@@ -113,6 +116,9 @@ public class MonthReport {
                         break;
                     default:
                 }
+            }
+            if (null == total || BigDecimal.ZERO.compareTo(total) == 0) {
+                total = BigDecimal.ONE;
             }
             d1Percent = d1.multiply(BigDecimal.valueOf(100)).divide(total, scale, BigDecimal.ROUND_HALF_UP);
             d2Percent = d2.multiply(BigDecimal.valueOf(100)).divide(total, scale, BigDecimal.ROUND_HALF_UP);
