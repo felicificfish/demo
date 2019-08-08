@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.configs.exception.ValidateException;
+import com.example.demo.controller.dto.PetInfoDTO;
 import com.example.demo.model.PetInfoDO;
 import com.example.demo.model.PetInfoVO;
 import com.example.demo.service.PetInfoService;
@@ -7,16 +9,21 @@ import com.example.demo.utils.ExcelExportUtil;
 import com.example.demo.utils.FileUtil;
 import com.example.demo.utils.SqlMapper;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.enmus.ExcelType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -81,6 +88,23 @@ public class PetInfoController {
     public void addPetInfo(String nickname) {
         PetInfoDO petInfoDO = new PetInfoDO();
         petInfoDO.setNickname(nickname);
+        petInfoDO.setCtime(new Date());
+        petInfoService.addPetInfo(petInfoDO);
+    }
+
+    @GetMapping("addPet2")
+    public void addPetInfo(@Valid PetInfoDTO petInfoDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<FieldError> allErrors = bindingResult.getFieldErrors();
+            List<String> errorMsgList = new ArrayList<>();
+            if (!CollectionUtils.isEmpty(allErrors)) {
+                for (FieldError error : allErrors) {
+                    errorMsgList.add(error.getField() + error.getDefaultMessage());
+                }
+            }
+            throw new ValidateException(StringUtils.join(errorMsgList, ","));
+        }
+        PetInfoDO petInfoDO = petInfoDTO.convertToPetInfoDO();
         petInfoDO.setCtime(new Date());
         petInfoService.addPetInfo(petInfoDO);
     }
