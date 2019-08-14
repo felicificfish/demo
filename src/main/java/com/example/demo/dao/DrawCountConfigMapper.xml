@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.DrawCountConfigMapper">
+    <sql id="full-columns">
+        t.config_id,
+        t.activity_type,
+        t.draw_code,
+        t.draw_desc,
+        t.draw_value,
+        t.level,
+        t.frequency,
+        t.createdon,
+        t.creator,
+        t.creator_id,
+        t.modifiedon,
+        t.modifier,
+        t.modifier_id
+    </sql>
+    <insert id="insertOne" parameterType="com.example.demo.model.DrawCountConfigDO">
+        INSERT INTO trans_draw_count_config (
+        <if test="activityType != null">
+            activity_type,
+        </if>
+        <if test="drawCode != null">
+            draw_code,
+        </if>
+        <if test="drawDesc != null and drawDesc != ''">
+            draw_desc,
+        </if>
+        <if test="drawValue != null">
+            draw_value,
+        </if>
+        <if test="level != null">
+            level,
+        </if>
+        <if test="frequency != null">
+            frequency,
+        </if>
+        <if test="createdon != null">
+            createdon,
+        </if>
+        <if test="creator != null and creator != ''">
+            creator,
+        </if>
+        <if test="creatorId != null">
+            creator_id
+        </if>
+        ) VALUES (
+        <if test="activityType != null">
+            #{activityType},
+        </if>
+        <if test="drawCode != null">
+            #{drawCode},
+        </if>
+        <if test="drawDesc != null and drawDesc != ''">
+            #{drawDesc},
+        </if>
+        <if test="drawValue != null">
+            #{drawValue},
+        </if>
+        <if test="level != null">
+            #{level},
+        </if>
+        <if test="frequency != null">
+            #{frequency},
+        </if>
+        <if test="createdon != null">
+            #{createdon},
+        </if>
+        <if test="creator != null and creator != ''">
+            #{creator},
+        </if>
+        <if test="creatorId != null">
+            #{creatorId}
+        </if>
+        )
+        <selectKey resultType="java.lang.Long" keyProperty="configId">
+            SELECT LAST_INSERT_ID() AS config_id
+        </selectKey>
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=";">
+            INSERT INTO trans_draw_count_config (
+            <if test="item.activityType != null">
+                activity_type,
+            </if>
+            <if test="item.drawCode != null">
+                draw_code,
+            </if>
+            <if test="item.drawDesc != null and item.drawDesc != ''">
+                draw_desc,
+            </if>
+            <if test="item.drawValue != null">
+                draw_value,
+            </if>
+            <if test="item.level != null">
+                level,
+            </if>
+            <if test="item.frequency != null">
+                frequency,
+            </if>
+            <if test="item.createdon != null">
+                createdon,
+            </if>
+            <if test="item.creator != null and item.creator != ''">
+                creator,
+            </if>
+            <if test="item.creatorId != null">
+                creator_id
+            </if>
+            ) VALUES (
+            <if test="item.activityType != null">
+                #{item.activityType},
+            </if>
+            <if test="item.drawCode != null">
+                #{item.drawCode},
+            </if>
+            <if test="item.drawDesc != null and item.drawDesc != ''">
+                #{item.drawDesc},
+            </if>
+            <if test="item.drawValue != null">
+                #{item.drawValue},
+            </if>
+            <if test="item.level != null">
+                #{item.level},
+            </if>
+            <if test="item.frequency != null">
+                #{item.frequency},
+            </if>
+            <if test="item.createdon != null">
+                #{item.createdon},
+            </if>
+            <if test="item.creator != null and item.creator != ''">
+                #{item.creator},
+            </if>
+            <if test="item.creatorId != null">
+                #{item.creatorId}
+            </if>
+            )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="com.example.demo.model.DrawCountConfigDO">
+        UPDATE trans_draw_count_config
+        <set>
+            <if test="activityType != null">
+                activity_type = #{activityType},
+            </if>
+            <if test="drawCode != null">
+                draw_code = #{drawCode},
+            </if>
+            <if test="drawDesc != null and drawDesc != ''">
+                draw_desc = #{drawDesc},
+            </if>
+            <if test="drawValue != null">
+                draw_value = #{drawValue},
+            </if>
+            <if test="level != null">
+                level = #{level},
+            </if>
+            <if test="frequency != null">
+                frequency = #{frequency},
+            </if>
+            <if test="modifiedon != null">
+                modifiedon = #{modifiedon},
+            </if>
+            <if test="modifier != null and modifier != ''">
+                modifier = #{modifier},
+            </if>
+            <if test="modifierId != null">
+                modifier_id = #{modifierId},
+            </if>
+        </set>
+        WHERE config_id = #{configId}
+    </update>
+
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator="">
+            UPDATE trans_draw_count_config
+            <set>
+                <if test="item.activityType != null">
+                    activity_type = #{item.activityType},
+                </if>
+                <if test="item.drawCode != null">
+                    draw_code = #{item.drawCode},
+                </if>
+                <if test="item.drawDesc != null and item.drawDesc != ''">
+                    draw_desc = #{item.drawDesc},
+                </if>
+                <if test="item.drawValue != null">
+                    draw_value = #{item.drawValue},
+                </if>
+                <if test="item.level != null">
+                    level = #{item.level},
+                </if>
+                <if test="item.frequency != null">
+                    frequency = #{item.frequency},
+                </if>
+                <if test="item.modifiedon != null">
+                    modifiedon = #{item.modifiedon},
+                </if>
+                <if test="item.modifier != null and item.modifier != ''">
+                    modifier = #{item.modifier},
+                </if>
+                <if test="item.modifierId != null">
+                    modifier_id = #{item.modifierId},
+                </if>
+            </set>
+            WHERE config_id = #{item.configId};
+        </foreach>
+    </update>
+
+    <select id="queryById" parameterType="java.lang.Long" resultType="com.example.demo.model.DrawCountConfigDO">
+	   	SELECT
+		config_id,
+		activity_type,
+		draw_code,
+		draw_desc,
+		draw_value,
+		level,
+		frequency,
+		createdon,
+		creator,
+		creator_id,
+		modifiedon,
+		modifier,
+		modifier_id
+       	FROM trans_draw_count_config
+       	WHERE config_id = #{value}
+    </select>
+
+    <select id="query" parameterType="com.example.demo.model.DrawCountConfigDO"
+            resultType="com.example.demo.model.DrawCountConfigDO">
+        SELECT
+        config_id,
+        activity_type,
+        draw_code,
+        draw_desc,
+        draw_value,
+        level,
+        frequency,
+        createdon,
+        creator,
+        creator_id,
+        modifiedon,
+        modifier,
+        modifier_id
+        FROM trans_draw_count_config
+        <where>
+            <if test="configId != null">
+                AND config_id = #{configId}
+            </if>
+            <if test="activityType != null">
+                AND activity_type = #{activityType}
+            </if>
+            <if test="drawCode != null">
+                AND draw_code = #{drawCode}
+            </if>
+            <if test="drawDesc != null and drawDesc != ''">
+                AND draw_desc = #{drawDesc}
+            </if>
+            <if test="drawValue != null">
+                AND draw_value = #{drawValue}
+            </if>
+            <if test="level != null">
+                AND level = #{level}
+            </if>
+            <if test="frequency != null">
+                AND frequency = #{frequency}
+            </if>
+            <if test="createdon != null">
+                AND createdon = #{createdon}
+            </if>
+            <if test="creator != null and creator != ''">
+                AND creator = #{creator}
+            </if>
+            <if test="creatorId != null">
+                AND creator_id = #{creatorId}
+            </if>
+            <if test="modifiedon != null">
+                AND modifiedon = #{modifiedon}
+            </if>
+            <if test="modifier != null and modifier != ''">
+                AND modifier = #{modifier}
+            </if>
+            <if test="modifierId != null">
+                AND modifier_id = #{modifierId}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryCount" parameterType="com.example.demo.model.DrawCountConfigDO" resultType="java.lang.Integer">
+        select count(*) FROM trans_draw_count_config
+        <where>
+            <if test="configId != null">
+                AND config_id = #{configId}
+            </if>
+            <if test="activityType != null">
+                AND activity_type = #{activityType}
+            </if>
+            <if test="drawCode != null">
+                AND draw_code = #{drawCode}
+            </if>
+            <if test="drawDesc != null and drawDesc != ''">
+                AND draw_desc = #{drawDesc}
+            </if>
+            <if test="drawValue != null">
+                AND draw_value = #{drawValue}
+            </if>
+            <if test="level != null">
+                AND level = #{level}
+            </if>
+            <if test="frequency != null">
+                AND frequency = #{frequency}
+            </if>
+            <if test="createdon != null">
+                AND createdon = #{createdon}
+            </if>
+            <if test="creator != null and creator != ''">
+                AND creator = #{creator}
+            </if>
+            <if test="creatorId != null">
+                AND creator_id = #{creatorId}
+            </if>
+            <if test="modifiedon != null">
+                AND modifiedon = #{modifiedon}
+            </if>
+            <if test="modifier != null and modifier != ''">
+                AND modifier = #{modifier}
+            </if>
+            <if test="modifierId != null">
+                AND modifier_id = #{modifierId}
+            </if>
+        </where>
+    </select>
+</mapper>

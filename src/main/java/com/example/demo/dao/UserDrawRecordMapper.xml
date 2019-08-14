@@ -6,7 +6,6 @@
         t.activity_type,
         t.user_id,
         t.level,
-        t.frequency,
         t.draw_code,
         t.draw_desc,
         t.if_draw,
@@ -24,9 +23,6 @@
         </if>
         <if test="level != null">
             `level`,
-        </if>
-        <if test="frequency != null">
-            frequency,
         </if>
         <if test="drawCode != null">
             draw_code,
@@ -55,9 +51,6 @@
         </if>
         <if test="level != null">
             #{level},
-        </if>
-        <if test="frequency != null">
-            #{frequency},
         </if>
         <if test="drawCode != null">
             #{drawCode},
@@ -95,9 +88,6 @@
             <if test="item.level != null">
                 `level`,
             </if>
-            <if test="item.frequency != null">
-                frequency,
-            </if>
             <if test="item.drawCode != null">
                 draw_code,
             </if>
@@ -125,9 +115,6 @@
             </if>
             <if test="item.level != null">
                 #{item.level},
-            </if>
-            <if test="item.frequency != null">
-                #{item.frequency},
             </if>
             <if test="item.drawCode != null">
                 #{item.drawCode},
@@ -162,9 +149,6 @@
             </if>
             <if test="level != null">
                 `level` = #{level},
-            </if>
-            <if test="frequency != null">
-                frequency = #{frequency},
             </if>
             <if test="drawCode != null">
                 draw_code = #{drawCode},
@@ -201,9 +185,6 @@
                 <if test="item.level != null">
                     `level` = #{item.level},
                 </if>
-                <if test="item.frequency != null">
-                    frequency = #{item.frequency},
-                </if>
                 <if test="item.drawCode != null">
                     draw_code = #{item.drawCode},
                 </if>
@@ -233,7 +214,6 @@
 		activity_type,
 		user_id,
 		`level`,
-		frequency,
 		draw_code,
 		draw_desc,
 		if_draw,
@@ -251,7 +231,6 @@
         activity_type,
         user_id,
         `level`,
-        frequency,
         draw_code,
         draw_desc,
         if_draw,
@@ -271,9 +250,6 @@
             </if>
             <if test="level != null">
                 AND `level` = #{level}
-            </if>
-            <if test="frequency != null">
-                AND frequency = #{frequency}
             </if>
             <if test="drawCode != null">
                 AND draw_code = #{drawCode}
@@ -310,9 +286,6 @@
             </if>
             <if test="level != null">
                 AND `level` = #{level}
-            </if>
-            <if test="frequency != null">
-                AND frequency = #{frequency}
             </if>
             <if test="drawCode != null">
                 AND draw_code = #{drawCode}

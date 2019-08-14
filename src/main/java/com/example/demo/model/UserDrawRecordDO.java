@@ -49,10 +49,6 @@ public class UserDrawRecordDO implements Serializable {
      */
     private Integer level;
     /**
-     * 活动期内抽奖频率：1-每天；2-每周；3-每月；4-仅一次；
-     */
-    private Integer frequency;
-    /**
      * 抽奖类型编码：1-20积分兑换；2-订单金额≥1万；
      */
     private Integer drawCode;

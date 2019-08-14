@@ -149,4 +149,120 @@ public class DateUtil {
         int intWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
         return weekDaysName[intWeek];
     }
+
+    /**
+     * 获得指定时间的开始时间，即2012-01-01 00:00:00
+     *
+     * @param date
+     * @return java.util.Date
+     */
+    public static Date getCurrentDayStartTime(Date date) {
+        SimpleDateFormat shortSdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            date = shortSdf.parse(shortSdf.format(date));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    /**
+     * 获得指定时间的结束时间，即2012-01-01 23:59:59
+     *
+     * @param date
+     * @return java.util.Date
+     */
+    public static Date getCurrentDayEndTime(Date date) {
+        SimpleDateFormat shortSdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat longSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            date = longSdf.parse(shortSdf.format(date) + " 23:59:59");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    /**
+     * 获得指定时间这周的第一天，周一
+     *
+     * @param date
+     * @return java.util.Date
+     */
+    public static Date getCurrentWeekDayStartTime(Date date) {
+        SimpleDateFormat shortSdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat longSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        try {
+            int weekday = c.get(Calendar.DAY_OF_WEEK) - 2;
+            c.add(Calendar.DATE, -weekday);
+            c.setTime(longSdf.parse(shortSdf.format(c.getTime()) + " 00:00:00"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return c.getTime();
+    }
+
+    /**
+     * 获得指定时间这周的最后一天，周日
+     *
+     * @param date
+     * @return java.util.Date
+     */
+    public static Date getCurrentWeekDayEndTime(Date date) {
+        SimpleDateFormat shortSdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat longSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        try {
+            int weekday = c.get(Calendar.DAY_OF_WEEK);
+            c.add(Calendar.DATE, 8 - weekday);
+            c.setTime(longSdf.parse(shortSdf.format(c.getTime()) + " 23:59:59"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return c.getTime();
+    }
+
+    /**
+     * 获得指定时间的月的开始时间，即2012-01-01 00:00:00
+     *
+     * @param date
+     * @return java.util.Date
+     */
+    public static Date getCurrentMonthStartTime(Date date) {
+        SimpleDateFormat shortSdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        try {
+            c.set(Calendar.DATE, 1);
+            date = shortSdf.parse(shortSdf.format(c.getTime()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    /**
+     * 获取指定时间的月的结束时间，即2012-01-31 23:59:59
+     *
+     * @param date
+     * @return java.util.Date
+     */
+    public static Date getCurrentMonthEndTime(Date date) {
+        SimpleDateFormat shortSdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat longSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        try {
+            c.set(Calendar.DATE, 1);
+            c.add(Calendar.MONTH, 1);
+            c.add(Calendar.DATE, -1);
+            date = longSdf.parse(shortSdf.format(c.getTime()) + " 23:59:59");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
 }
