@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.PrizeConfigMapper">
+    <sql id="full-columns">
+        t.prize_id,
+        t.prize_code,
+        t.prize_name,
+        t.prize_probability,
+        t.activity_type,
+        t.createdon,
+        t.creator,
+        t.creator_id,
+        t.modifiedon,
+        t.modifier,
+        t.modifier_id
+    </sql>
+    <insert id="insertOne" parameterType="com.example.demo.model.PrizeConfigDO">
+        INSERT INTO trans_prize_config (
+        <if test="prizeCode != null and prizeCode != ''">
+            prize_code,
+        </if>
+        <if test="prizeName != null and prizeName != ''">
+            prize_name,
+        </if>
+        <if test="prizeProbability != null">
+            prize_probability,
+        </if>
+        <if test="activityType != null">
+            activity_type,
+        </if>
+        <if test="createdon != null">
+            createdon,
+        </if>
+        <if test="creator != null and creator != ''">
+            creator,
+        </if>
+        <if test="creatorId != null">
+            creator_id
+        </if>
+        ) VALUES (
+        <if test="prizeCode != null and prizeCode != ''">
+            #{prizeCode},
+        </if>
+        <if test="prizeName != null and prizeName != ''">
+            #{prizeName},
+        </if>
+        <if test="prizeProbability != null">
+            #{prizeProbability},
+        </if>
+        <if test="activityType != null">
+            #{activityType},
+        </if>
+        <if test="createdon != null">
+            #{createdon},
+        </if>
+        <if test="creator != null and creator != ''">
+            #{creator},
+        </if>
+        <if test="creatorId != null">
+            #{creatorId}
+        </if>
+        )
+        <selectKey resultType="java.lang.Long" keyProperty="prizeId">
+            SELECT LAST_INSERT_ID() AS prize_id
+        </selectKey>
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=";">
+            INSERT INTO trans_prize_config (
+            <if test="item.prizeCode != null and item.prizeCode != ''">
+                prize_code,
+            </if>
+            <if test="item.prizeName != null and item.prizeName != ''">
+                prize_name,
+            </if>
+            <if test="item.prizeProbability != null">
+                prize_probability,
+            </if>
+            <if test="item.activityType != null">
+                activity_type,
+            </if>
+            <if test="item.creator != null and item.creator != ''">
+                creator,
+            </if>
+            <if test="item.creatorId != null">
+                creator_id,
+            </if>
+            <if test="item.createdon != null">
+                createdon
+            </if>
+            ) VALUES (
+            <if test="item.prizeCode != null and item.prizeCode != ''">
+                #{item.prizeCode},
+            </if>
+            <if test="item.prizeName != null and item.prizeName != ''">
+                #{item.prizeName},
+            </if>
+            <if test="item.prizeProbability != null">
+                #{item.prizeProbability},
+            </if>
+            <if test="item.activityType != null">
+                #{item.activityType},
+            </if>
+            <if test="item.creator != null and item.creator != ''">
+                #{item.creator},
+            </if>
+            <if test="item.creatorId != null">
+                #{item.creatorId},
+            </if>
+            <if test="item.createdon != null">
+                #{item.createdon}
+            </if>
+            )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="com.example.demo.model.PrizeConfigDO">
+        UPDATE trans_prize_config
+        <set>
+            <if test="prizeCode != null and prizeCode != ''">
+                prize_code = #{prizeCode},
+            </if>
+            <if test="prizeName != null and prizeName != ''">
+                prize_name = #{prizeName},
+            </if>
+            <if test="prizeProbability != null">
+                prize_probability = #{prizeProbability},
+            </if>
+            <if test="activityType != null">
+                activity_type = #{activityType},
+            </if>
+            <if test="modifiedon != null">
+                modifiedon = #{modifiedon},
+            </if>
+            <if test="modifier != null and modifier != ''">
+                modifier = #{modifier},
+            </if>
+            <if test="modifierId != null">
+                modifier_id = #{modifierId},
+            </if>
+        </set>
+        WHERE prize_id = #{prizeId}
+    </update>
+
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator="">
+            UPDATE trans_prize_config
+            <set>
+                <if test="item.prizeCode != null and item.prizeCode != ''">
+                    prize_code = #{item.prizeCode},
+                </if>
+                <if test="item.prizeName != null and item.prizeName != ''">
+                    prize_name = #{item.prizeName},
+                </if>
+                <if test="item.prizeProbability != null">
+                    prize_probability = #{item.prizeProbability},
+                </if>
+                <if test="item.activityType != null">
+                    activity_type = #{item.activityType},
+                </if>
+                <if test="item.modifiedon != null">
+                    modifiedon = #{item.modifiedon},
+                </if>
+                <if test="item.modifier != null and item.modifier != ''">
+                    modifier = #{item.modifier},
+                </if>
+                <if test="item.modifierId != null">
+                    modifier_id = #{item.modifierId},
+                </if>
+            </set>
+            WHERE prize_id = #{item.prizeId};
+        </foreach>
+    </update>
+
+    <select id="queryById" parameterType="java.lang.Long" resultType="com.example.demo.model.PrizeConfigDO">
+	   	SELECT
+		prize_id,
+		prize_code,
+		prize_name,
+		prize_probability,
+		activity_type,
+		createdon,
+		creator,
+		creator_id,
+		modifiedon,
+		modifier,
+		modifier_id
+       	FROM trans_prize_config
+       	WHERE prize_id = #{value}
+    </select>
+
+    <select id="query" parameterType="com.example.demo.model.PrizeConfigDO"
+            resultType="com.example.demo.model.PrizeConfigDO">
+        SELECT
+        prize_id,
+        prize_code,
+        prize_name,
+        prize_probability,
+        activity_type,
+        createdon,
+        creator,
+        creator_id,
+        modifiedon,
+        modifier,
+        modifier_id
+        FROM trans_prize_config
+        <where>
+            <if test="prizeId != null">
+                AND prize_id = #{prizeId}
+            </if>
+            <if test="prizeCode != null and prizeCode != ''">
+                AND prize_code = #{prizeCode}
+            </if>
+            <if test="prizeName != null and prizeName != ''">
+                AND prize_name = #{prizeName}
+            </if>
+            <if test="prizeProbability != null">
+                AND prize_probability = #{prizeProbability}
+            </if>
+            <if test="activityType != null">
+                AND activity_type = #{activityType}
+            </if>
+            <if test="creator != null and creator != ''">
+                AND creator = #{creator}
+            </if>
+            <if test="creatorId != null">
+                AND creator_id = #{creatorId}
+            </if>
+            <if test="createdon != null">
+                AND createdon = #{createdon}
+            </if>
+            <if test="modifiedon != null">
+                AND modifiedon = #{modifiedon}
+            </if>
+            <if test="modifier != null and modifier != ''">
+                AND modifier = #{modifier}
+            </if>
+            <if test="modifierId != null">
+                AND modifier_id = #{modifierId}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryCount" parameterType="com.example.demo.model.PrizeConfigDO" resultType="java.lang.Integer">
+        select count(*) FROM trans_prize_config
+        <where>
+            <if test="prizeId != null">
+                AND prize_id = #{prizeId}
+            </if>
+            <if test="prizeCode != null and prizeCode != ''">
+                AND prize_code = #{prizeCode}
+            </if>
+            <if test="prizeName != null and prizeName != ''">
+                AND prize_name = #{prizeName}
+            </if>
+            <if test="prizeProbability != null">
+                AND prize_probability = #{prizeProbability}
+            </if>
+            <if test="activityType != null">
+                AND activity_type = #{activityType}
+            </if>
+            <if test="creator != null and creator != ''">
+                AND creator = #{creator}
+            </if>
+            <if test="creatorId != null">
+                AND creator_id = #{creatorId}
+            </if>
+            <if test="createdon != null">
+                AND createdon = #{createdon}
+            </if>
+            <if test="modifiedon != null">
+                AND modifiedon = #{modifiedon}
+            </if>
+            <if test="modifier != null and modifier != ''">
+                AND modifier = #{modifier}
+            </if>
+            <if test="modifierId != null">
+                AND modifier_id = #{modifierId}
+            </if>
+        </where>
+    </select>
+</mapper>

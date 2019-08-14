@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.ActivityTimeMapper">
+    <sql id="full-columns">
+        t.activity_time_id,
+        t.type,
+        t.remark,
+        t.start_time,
+        t.end_time
+    </sql>
+    <insert id="insertOne" parameterType="com.example.demo.model.ActivityTimeDO">
+        INSERT INTO trans_activity_time (
+        <if test="type != null">
+            type,
+        </if>
+        <if test="remark != null and remark != ''">
+            remark,
+        </if>
+        <if test="startTime != null">
+            start_time,
+        </if>
+        <if test="endTime != null">
+            end_time
+        </if>
+        ) VALUES (
+        <if test="type != null">
+            #{type},
+        </if>
+        <if test="remark != null and remark != ''">
+            #{remark},
+        </if>
+        <if test="startTime != null">
+            #{startTime},
+        </if>
+        <if test="endTime != null">
+            #{endTime}
+        </if>
+        )
+        <selectKey resultType="java.lang.Long" keyProperty="activityTimeId">
+            SELECT LAST_INSERT_ID() AS activity_time_id
+        </selectKey>
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=";">
+            INSERT INTO trans_activity_time (
+            <if test="item.type != null">
+                type,
+            </if>
+            <if test="item.remark != null and item.remark != ''">
+                remark,
+            </if>
+            <if test="item.startTime != null">
+                start_time,
+            </if>
+            <if test="item.endTime != null">
+                end_time
+            </if>
+            ) VALUES (
+            <if test="item.type != null">
+                #{item.type},
+            </if>
+            <if test="item.remark != null and item.remark != ''">
+                #{item.remark},
+            </if>
+            <if test="item.startTime != null">
+                #{item.startTime},
+            </if>
+            <if test="item.endTime != null">
+                #{item.endTime}
+            </if>
+            )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="com.example.demo.model.ActivityTimeDO">
+        UPDATE trans_activity_time
+        <set>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime},
+            </if>
+        </set>
+        WHERE activity_time_id = #{activityTimeId}
+    </update>
+
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator="">
+            UPDATE trans_activity_time
+            <set>
+                <if test="item.type != null">
+                    type = #{item.type},
+                </if>
+                <if test="item.remark != null and item.remark != ''">
+                    remark = #{item.remark},
+                </if>
+                <if test="item.startTime != null">
+                    start_time = #{item.startTime},
+                </if>
+                <if test="item.endTime != null">
+                    end_time = #{item.endTime},
+                </if>
+            </set>
+            WHERE activity_time_id = #{item.activityTimeId};
+        </foreach>
+    </update>
+
+    <select id="queryById" parameterType="java.lang.Long" resultType="com.example.demo.model.ActivityTimeDO">
+	   	SELECT
+		activity_time_id,
+		type,
+		remark,
+		start_time,
+		end_time
+       	FROM trans_activity_time
+       	WHERE activity_time_id = #{value}
+    </select>
+
+    <select id="query" parameterType="com.example.demo.model.ActivityTimeDO"
+            resultType="com.example.demo.model.ActivityTimeDO">
+        SELECT
+        activity_time_id,
+        type,
+        remark,
+        start_time,
+        end_time
+        FROM trans_activity_time
+        <where>
+            <if test="activityTimeId != null">
+                AND activity_time_id = #{activityTimeId}
+            </if>
+            <if test="type != null">
+                AND type = #{type}
+            </if>
+            <if test="remark != null and remark != ''">
+                AND remark = #{remark}
+            </if>
+            <if test="startTime != null">
+                AND start_time = #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND end_time = #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryCount" parameterType="com.example.demo.model.ActivityTimeDO" resultType="java.lang.Integer">
+        select count(*) FROM trans_activity_time
+        <where>
+            <if test="activityTimeId != null">
+                AND activity_time_id = #{activityTimeId}
+            </if>
+            <if test="type != null">
+                AND type = #{type}
+            </if>
+            <if test="remark != null and remark != ''">
+                AND remark = #{remark}
+            </if>
+            <if test="startTime != null">
+                AND start_time = #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND end_time = #{endTime}
+            </if>
+        </where>
+    </select>
+</mapper>

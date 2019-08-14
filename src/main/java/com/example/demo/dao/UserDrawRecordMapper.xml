@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.UserDrawRecordMapper">
+    <sql id="full-columns">
+        t.draw_id,
+        t.activity_type,
+        t.user_id,
+        t.level,
+        t.frequency,
+        t.draw_code,
+        t.draw_desc,
+        t.if_draw,
+        t.prize_code,
+        t.draw_time,
+        t.createdon
+    </sql>
+    <insert id="insertOne" parameterType="com.example.demo.model.UserDrawRecordDO">
+        INSERT INTO trans_user_draw_record (
+        <if test="activityType != null">
+            activity_type,
+        </if>
+        <if test="userId != null">
+            user_id,
+        </if>
+        <if test="level != null">
+            `level`,
+        </if>
+        <if test="frequency != null">
+            frequency,
+        </if>
+        <if test="drawCode != null">
+            draw_code,
+        </if>
+        <if test="drawDesc != null and drawDesc != ''">
+            draw_desc,
+        </if>
+        <if test="ifDraw != null">
+            if_draw,
+        </if>
+        <if test="prizeCode != null">
+            prize_code,
+        </if>
+        <if test="drawTime != null">
+            draw_time,
+        </if>
+        <if test="createdon != null">
+            createdon
+        </if>
+        ) VALUES (
+        <if test="activityType != null">
+            #{activityType},
+        </if>
+        <if test="userId != null">
+            #{userId},
+        </if>
+        <if test="level != null">
+            #{level},
+        </if>
+        <if test="frequency != null">
+            #{frequency},
+        </if>
+        <if test="drawCode != null">
+            #{drawCode},
+        </if>
+        <if test="drawDesc != null and drawDesc != ''">
+            #{drawDesc},
+        </if>
+        <if test="ifDraw != null">
+            #{ifDraw},
+        </if>
+        <if test="prizeCode != null">
+            #{prizeCode},
+        </if>
+        <if test="drawTime != null">
+            #{drawTime},
+        </if>
+        <if test="createdon != null">
+            #{createdon}
+        </if>
+        )
+        <selectKey resultType="java.lang.Long" keyProperty="drawId">
+            SELECT LAST_INSERT_ID() AS draw_id
+        </selectKey>
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=";">
+            INSERT INTO trans_user_draw_record (
+            <if test="item.activityType != null">
+                activity_type,
+            </if>
+            <if test="item.userId != null">
+                user_id,
+            </if>
+            <if test="item.level != null">
+                `level`,
+            </if>
+            <if test="item.frequency != null">
+                frequency,
+            </if>
+            <if test="item.drawCode != null">
+                draw_code,
+            </if>
+            <if test="item.drawDesc != null and item.drawDesc != ''">
+                draw_desc,
+            </if>
+            <if test="item.ifDraw != null">
+                if_draw,
+            </if>
+            <if test="item.prizeCode != null">
+                prize_code,
+            </if>
+            <if test="item.drawTime != null">
+                draw_time,
+            </if>
+            <if test="item.createdon != null">
+                createdon
+            </if>
+            ) VALUES (
+            <if test="item.activityType != null">
+                #{item.activityType},
+            </if>
+            <if test="item.userId != null">
+                #{item.userId},
+            </if>
+            <if test="item.level != null">
+                #{item.level},
+            </if>
+            <if test="item.frequency != null">
+                #{item.frequency},
+            </if>
+            <if test="item.drawCode != null">
+                #{item.drawCode},
+            </if>
+            <if test="item.drawDesc != null and item.drawDesc != ''">
+                #{item.drawDesc},
+            </if>
+            <if test="item.ifDraw != null">
+                #{item.ifDraw},
+            </if>
+            <if test="item.prizeCode != null">
+                #{item.prizeCode},
+            </if>
+            <if test="item.drawTime != null">
+                #{item.drawTime},
+            </if>
+            <if test="item.createdon != null">
+                #{item.createdon}
+            </if>
+            )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="com.example.demo.model.UserDrawRecordDO">
+        UPDATE trans_user_draw_record
+        <set>
+            <if test="activityType != null">
+                activity_type = #{activityType},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="level != null">
+                `level` = #{level},
+            </if>
+            <if test="frequency != null">
+                frequency = #{frequency},
+            </if>
+            <if test="drawCode != null">
+                draw_code = #{drawCode},
+            </if>
+            <if test="drawDesc != null and drawDesc != ''">
+                draw_desc = #{drawDesc},
+            </if>
+            <if test="ifDraw != null">
+                if_draw = #{ifDraw},
+            </if>
+            <if test="prizeCode != null">
+                prize_code = #{prizeCode},
+            </if>
+            <if test="drawTime != null">
+                draw_time = #{drawTime},
+            </if>
+            <if test="createdon != null">
+                createdon = #{createdon},
+            </if>
+        </set>
+        WHERE draw_id = #{drawId}
+    </update>
+
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator="">
+            UPDATE trans_user_draw_record
+            <set>
+                <if test="item.activityType != null">
+                    activity_type = #{item.activityType},
+                </if>
+                <if test="item.userId != null">
+                    user_id = #{item.userId},
+                </if>
+                <if test="item.level != null">
+                    `level` = #{item.level},
+                </if>
+                <if test="item.frequency != null">
+                    frequency = #{item.frequency},
+                </if>
+                <if test="item.drawCode != null">
+                    draw_code = #{item.drawCode},
+                </if>
+                <if test="item.drawDesc != null and item.drawDesc != ''">
+                    draw_desc = #{item.drawDesc},
+                </if>
+                <if test="item.ifDraw != null">
+                    if_draw = #{item.ifDraw},
+                </if>
+                <if test="item.prizeCode != null">
+                    prize_code = #{item.prizeCode},
+                </if>
+                <if test="item.drawTime != null">
+                    draw_time = #{item.drawTime},
+                </if>
+                <if test="item.createdon != null">
+                    createdon = #{item.createdon},
+                </if>
+            </set>
+            WHERE draw_id = #{item.drawId};
+        </foreach>
+    </update>
+
+    <select id="queryById" parameterType="java.lang.Long" resultType="com.example.demo.model.UserDrawRecordDO">
+	   	SELECT
+		draw_id,
+		activity_type,
+		user_id,
+		`level`,
+		frequency,
+		draw_code,
+		draw_desc,
+		if_draw,
+		prize_code,
+		draw_time,
+		createdon
+       	FROM trans_user_draw_record
+       	WHERE draw_id = #{value}
+    </select>
+
+    <select id="query" parameterType="com.example.demo.model.UserDrawRecordDO"
+            resultType="com.example.demo.model.UserDrawRecordDO">
+        SELECT
+        draw_id,
+        activity_type,
+        user_id,
+        `level`,
+        frequency,
+        draw_code,
+        draw_desc,
+        if_draw,
+        prize_code,
+        draw_time,
+        createdon
+        FROM trans_user_draw_record
+        <where>
+            <if test="drawId != null">
+                AND draw_id = #{drawId}
+            </if>
+            <if test="activityType != null">
+                AND activity_type = #{activityType}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="level != null">
+                AND `level` = #{level}
+            </if>
+            <if test="frequency != null">
+                AND frequency = #{frequency}
+            </if>
+            <if test="drawCode != null">
+                AND draw_code = #{drawCode}
+            </if>
+            <if test="drawDesc != null and drawDesc != ''">
+                AND draw_desc = #{drawDesc}
+            </if>
+            <if test="ifDraw != null">
+                AND if_draw = #{ifDraw}
+            </if>
+            <if test="prizeCode != null">
+                AND prize_code = #{prizeCode}
+            </if>
+            <if test="drawTime != null">
+                AND draw_time = #{drawTime}
+            </if>
+            <if test="createdon != null">
+                AND createdon = #{createdon}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryCount" parameterType="com.example.demo.model.UserDrawRecordDO" resultType="java.lang.Integer">
+        select count(*) FROM trans_user_draw_record
+        <where>
+            <if test="drawId != null">
+                AND draw_id = #{drawId}
+            </if>
+            <if test="activityType != null">
+                AND activity_type = #{activityType}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="level != null">
+                AND `level` = #{level}
+            </if>
+            <if test="frequency != null">
+                AND frequency = #{frequency}
+            </if>
+            <if test="drawCode != null">
+                AND draw_code = #{drawCode}
+            </if>
+            <if test="drawDesc != null and drawDesc != ''">
+                AND draw_desc = #{drawDesc}
+            </if>
+            <if test="ifDraw != null">
+                AND if_draw = #{ifDraw}
+            </if>
+            <if test="prizeCode != null">
+                AND prize_code = #{prizeCode}
+            </if>
+            <if test="drawTime != null">
+                AND draw_time = #{drawTime}
+            </if>
+            <if test="createdon != null">
+                AND createdon = #{createdon}
+            </if>
+        </where>
+    </select>
+</mapper>
