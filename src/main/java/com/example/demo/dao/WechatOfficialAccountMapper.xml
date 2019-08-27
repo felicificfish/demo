@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.WechatOfficialAccountMapper">
+    <sql id="full-columns">
+        t.openid,
+        t.unionid,
+        t.app_id,
+        t.subscribe,
+        t.subscribe_time,
+        t.nickname,
+        t.sex,
+        t.country,
+        t.province,
+        t.city,
+        t.language,
+        t.headimgurl,
+        t.remark,
+        t.groupid,
+        t.tagid_list,
+        t.subscribe_scene,
+        t.qr_scene,
+        t.qr_scene_str,
+        t.createdon,
+        t.modifiedon
+    </sql>
+    <insert id="insertOne" parameterType="com.example.demo.model.WechatOfficialAccountDO">
+        INSERT INTO wealth_wechat_official_account (
+        <if test="openid != null">
+            openid,
+        </if>
+        <if test="unionid != null and unionid != ''">
+            unionid,
+        </if>
+        <if test="appId != null and appId != ''">
+            app_id,
+        </if>
+        <if test="subscribe != null">
+            subscribe,
+        </if>
+        <if test="subscribeTime != null">
+            subscribe_time,
+        </if>
+        <if test="nickname != null and nickname != ''">
+            nickname,
+        </if>
+        <if test="sex != null">
+            sex,
+        </if>
+        <if test="country != null and country != ''">
+            country,
+        </if>
+        <if test="province != null and province != ''">
+            province,
+        </if>
+        <if test="city != null and city != ''">
+            city,
+        </if>
+        <if test="language != null and language != ''">
+            language,
+        </if>
+        <if test="headimgurl != null and headimgurl != ''">
+            headimgurl,
+        </if>
+        <if test="remark != null and remark != ''">
+            remark,
+        </if>
+        <if test="groupid != null">
+            groupid,
+        </if>
+        <if test="tagidList != null and tagidList != ''">
+            tagid_list,
+        </if>
+        <if test="subscribeScene != null and subscribeScene != ''">
+            subscribe_scene,
+        </if>
+        <if test="qrScene != null and qrScene != ''">
+            qr_scene,
+        </if>
+        <if test="qrSceneStr != null and qrSceneStr != ''">
+            qr_scene_str,
+        </if>
+        <if test="createdon != null">
+            createdon
+        </if>
+        ) VALUES (
+        <if test="openid != null">
+            #{openid},
+        </if>
+        <if test="unionid != null and unionid != ''">
+            #{unionid},
+        </if>
+        <if test="appId != null and appId != ''">
+            #{appId},
+        </if>
+        <if test="subscribe != null">
+            #{subscribe},
+        </if>
+        <if test="subscribeTime != null">
+            #{subscribeTime},
+        </if>
+        <if test="nickname != null and nickname != ''">
+            #{nickname},
+        </if>
+        <if test="sex != null">
+            #{sex},
+        </if>
+        <if test="country != null and country != ''">
+            #{country},
+        </if>
+        <if test="province != null and province != ''">
+            #{province},
+        </if>
+        <if test="city != null and city != ''">
+            #{city},
+        </if>
+        <if test="language != null and language != ''">
+            #{language},
+        </if>
+        <if test="headimgurl != null and headimgurl != ''">
+            #{headimgurl},
+        </if>
+        <if test="remark != null and remark != ''">
+            #{remark},
+        </if>
+        <if test="groupid != null">
+            #{groupid},
+        </if>
+        <if test="tagidList != null and tagidList != ''">
+            #{tagidList},
+        </if>
+        <if test="subscribeScene != null and subscribeScene != ''">
+            #{subscribeScene},
+        </if>
+        <if test="qrScene != null and qrScene != ''">
+            #{qrScene},
+        </if>
+        <if test="qrSceneStr != null and qrSceneStr != ''">
+            #{qrSceneStr},
+        </if>
+        <if test="createdon != null">
+            #{createdon}
+        </if>
+        )
+    </insert>
+
+    <update id="update" parameterType="com.example.demo.model.WechatOfficialAccountDO">
+        UPDATE wealth_wechat_official_account
+        <set>
+            <if test="unionid != null and unionid != ''">
+                unionid = #{unionid},
+            </if>
+            <if test="appId != null and appId != ''">
+                app_id = #{appId},
+            </if>
+            <if test="subscribe != null">
+                subscribe = #{subscribe},
+            </if>
+            <if test="subscribeTime != null">
+                subscribe_time = #{subscribeTime},
+            </if>
+            <if test="nickname != null and nickname != ''">
+                nickname = #{nickname},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="country != null and country != ''">
+                country = #{country},
+            </if>
+            <if test="province != null and province != ''">
+                province = #{province},
+            </if>
+            <if test="city != null and city != ''">
+                city = #{city},
+            </if>
+            <if test="language != null and language != ''">
+                language = #{language},
+            </if>
+            <if test="headimgurl != null and headimgurl != ''">
+                headimgurl = #{headimgurl},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="groupid != null">
+                groupid = #{groupid},
+            </if>
+            <if test="tagidList != null and tagidList != ''">
+                tagid_list = #{tagidList},
+            </if>
+            <if test="subscribeScene != null and subscribeScene != ''">
+                subscribe_scene = #{subscribeScene},
+            </if>
+            <if test="qrScene != null and qrScene != ''">
+                qr_scene = #{qrScene},
+            </if>
+            <if test="qrSceneStr != null and qrSceneStr != ''">
+                qr_scene_str = #{qrSceneStr},
+            </if>
+            <if test="modifiedon != null">
+                modifiedon = #{modifiedon},
+            </if>
+        </set>
+        WHERE openid = #{openid}
+    </update>
+
+    <select id="selectCountByPrimaryKey" resultType="java.lang.Integer">
+        select count(openid) FROM wealth_wechat_official_account WHERE openid = #{value}
+    </select>
+</mapper>

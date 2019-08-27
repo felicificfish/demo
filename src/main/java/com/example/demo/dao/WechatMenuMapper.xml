@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.WechatMenuMapper">
+    <sql id="full-columns">
+        t.menu_id,
+        t.app_id,
+        t.menu_name,
+        t.menu_leve,
+        t.menu_pid,
+        t.is_enable,
+        t.sort,
+        t.menu_type,
+        t.url,
+        t.event_type,
+        t.msg_id,
+        t.input_code,
+        t.creator_id,
+        t.creator,
+        t.createdon,
+        t.modifier_id,
+        t.modifier,
+        t.modifiedon,
+        t.is_del
+    </sql>
+    <insert id="insertOne" parameterType="com.example.demo.model.WechatMenuDO">
+        INSERT INTO trans_wechat_menu (
+        <if test="appId != null and appId != ''">
+            app_id,
+        </if>
+        <if test="menuName != null and menuName != ''">
+            menu_name,
+        </if>
+        <if test="menuLeve != null">
+            menu_leve,
+        </if>
+        <if test="menuPid != null">
+            menu_pid,
+        </if>
+        <if test="isEnable != null">
+            is_enable,
+        </if>
+        <if test="sort != null">
+            sort,
+        </if>
+        <if test="menuType != null and menuType != ''">
+            menu_type,
+        </if>
+        <if test="url != null and url != ''">
+            url,
+        </if>
+        <if test="eventType != null and eventType != ''">
+            event_type,
+        </if>
+        <if test="msgId != null">
+            msg_id,
+        </if>
+        <if test="inputCode != null and inputCode != ''">
+            input_code,
+        </if>
+        <if test="creatorId != null">
+            creator_id,
+        </if>
+        <if test="creator != null and creator != ''">
+            creator,
+        </if>
+        <if test="createdon != null">
+            createdon,
+        </if>
+        <if test="isDel != null">
+            is_del
+        </if>
+        ) VALUES (
+        <if test="appId != null and appId != ''">
+            #{appId},
+        </if>
+        <if test="menuName != null and menuName != ''">
+            #{menuName},
+        </if>
+        <if test="menuLeve != null">
+            #{menuLeve},
+        </if>
+        <if test="menuPid != null">
+            #{menuPid},
+        </if>
+        <if test="isEnable != null">
+            #{isEnable},
+        </if>
+        <if test="sort != null">
+            #{sort},
+        </if>
+        <if test="menuType != null and menuType != ''">
+            #{menuType},
+        </if>
+        <if test="url != null and url != ''">
+            #{url},
+        </if>
+        <if test="eventType != null and eventType != ''">
+            #{eventType},
+        </if>
+        <if test="msgId != null">
+            #{msgId},
+        </if>
+        <if test="inputCode != null and inputCode != ''">
+            #{inputCode},
+        </if>
+        <if test="creatorId != null">
+            #{creatorId},
+        </if>
+        <if test="creator != null and creator != ''">
+            #{creator},
+        </if>
+        <if test="createdon != null">
+            #{createdon},
+        </if>
+        <if test="isDel != null">
+            #{isDel}
+        </if>
+        )
+        <selectKey resultType="java.lang.Long" keyProperty="menuId">
+            SELECT LAST_INSERT_ID() AS menu_id
+        </selectKey>
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=";">
+            INSERT INTO trans_wechat_menu (
+            <if test="item.appId != null and item.appId != ''">
+                app_id,
+            </if>
+            <if test="item.menuName != null and item.menuName != ''">
+                menu_name,
+            </if>
+            <if test="item.menuLeve != null">
+                menu_leve,
+            </if>
+            <if test="item.menuPid != null">
+                menu_pid,
+            </if>
+            <if test="item.isEnable != null">
+                is_enable,
+            </if>
+            <if test="item.sort != null">
+                sort,
+            </if>
+            <if test="item.menuType != null and item.menuType != ''">
+                menu_type,
+            </if>
+            <if test="item.url != null and item.url != ''">
+                url,
+            </if>
+            <if test="item.eventType != null and item.eventType != ''">
+                event_type,
+            </if>
+            <if test="item.msgId != null">
+                msg_id,
+            </if>
+            <if test="item.inputCode != null and item.inputCode != ''">
+                input_code,
+            </if>
+            <if test="item.creatorId != null">
+                creator_id,
+            </if>
+            <if test="item.creator != null and item.creator != ''">
+                creator,
+            </if>
+            <if test="item.createdon != null">
+                createdon,
+            </if>
+            <if test="item.isDel != null">
+                is_del
+            </if>
+            ) VALUES (
+            <if test="item.appId != null and item.appId != ''">
+                #{item.appId},
+            </if>
+            <if test="item.menuName != null and item.menuName != ''">
+                #{item.menuName},
+            </if>
+            <if test="item.menuLeve != null">
+                #{item.menuLeve},
+            </if>
+            <if test="item.menuPid != null">
+                #{item.menuPid},
+            </if>
+            <if test="item.isEnable != null">
+                #{item.isEnable},
+            </if>
+            <if test="item.sort != null">
+                #{item.sort},
+            </if>
+            <if test="item.menuType != null and item.menuType != ''">
+                #{item.menuType},
+            </if>
+            <if test="item.url != null and item.url != ''">
+                #{item.url},
+            </if>
+            <if test="item.eventType != null and item.eventType != ''">
+                #{item.eventType},
+            </if>
+            <if test="item.msgId != null">
+                #{item.msgId},
+            </if>
+            <if test="item.inputCode != null and item.inputCode != ''">
+                #{item.inputCode},
+            </if>
+            <if test="item.creatorId != null">
+                #{item.creatorId},
+            </if>
+            <if test="item.creator != null and item.creator != ''">
+                #{item.creator},
+            </if>
+            <if test="item.createdon != null">
+                #{item.createdon},
+            </if>
+            <if test="item.isDel != null">
+                #{item.isDel}
+            </if>
+            )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="com.example.demo.model.WechatMenuDO">
+        UPDATE trans_wechat_menu
+        <set>
+            <if test="appId != null and appId != ''">
+                app_id = #{appId},
+            </if>
+            <if test="menuName != null and menuName != ''">
+                menu_name = #{menuName},
+            </if>
+            <if test="menuLeve != null">
+                menu_leve = #{menuLeve},
+            </if>
+            <if test="menuPid != null">
+                menu_pid = #{menuPid},
+            </if>
+            <if test="isEnable != null">
+                is_enable = #{isEnable},
+            </if>
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+            <if test="menuType != null and menuType != ''">
+                menu_type = #{menuType},
+            </if>
+            <if test="url != null and url != ''">
+                url = #{url},
+            </if>
+            <if test="eventType != null and eventType != ''">
+                event_type = #{eventType},
+            </if>
+            <if test="msgId != null">
+                msg_id = #{msgId},
+            </if>
+            <if test="inputCode != null and inputCode != ''">
+                input_code = #{inputCode},
+            </if>
+            <if test="creatorId != null">
+                creator_id = #{creatorId},
+            </if>
+            <if test="creator != null and creator != ''">
+                creator = #{creator},
+            </if>
+            <if test="createdon != null">
+                createdon = #{createdon},
+            </if>
+            <if test="modifierId != null">
+                modifier_id = #{modifierId},
+            </if>
+            <if test="modifier != null and modifier != ''">
+                modifier = #{modifier},
+            </if>
+            <if test="modifiedon != null">
+                modifiedon = #{modifiedon},
+            </if>
+            <if test="isDel != null">
+                is_del = #{isDel},
+            </if>
+        </set>
+        WHERE 1 = 1
+        AND menu_id = #{menuId}
+    </update>
+
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator="">
+            UPDATE trans_wechat_menu
+            <set>
+                <if test="item.appId != null and item.appId != ''">
+                    app_id = #{item.appId},
+                </if>
+                <if test="item.menuName != null and item.menuName != ''">
+                    menu_name = #{item.menuName},
+                </if>
+                <if test="item.menuLeve != null">
+                    menu_leve = #{item.menuLeve},
+                </if>
+                <if test="item.menuPid != null">
+                    menu_pid = #{item.menuPid},
+                </if>
+                <if test="item.isEnable != null">
+                    is_enable = #{item.isEnable},
+                </if>
+                <if test="item.sort != null">
+                    sort = #{item.sort},
+                </if>
+                <if test="item.menuType != null and item.menuType != ''">
+                    menu_type = #{item.menuType},
+                </if>
+                <if test="item.url != null and item.url != ''">
+                    url = #{item.url},
+                </if>
+                <if test="item.eventType != null and item.eventType != ''">
+                    event_type = #{item.eventType},
+                </if>
+                <if test="item.msgId != null">
+                    msg_id = #{item.msgId},
+                </if>
+                <if test="item.inputCode != null and item.inputCode != ''">
+                    input_code = #{item.inputCode},
+                </if>
+                <if test="item.creatorId != null">
+                    creator_id = #{item.creatorId},
+                </if>
+                <if test="item.creator != null and item.creator != ''">
+                    creator = #{item.creator},
+                </if>
+                <if test="item.createdon != null">
+                    createdon = #{item.createdon},
+                </if>
+                <if test="item.modifierId != null">
+                    modifier_id = #{item.modifierId},
+                </if>
+                <if test="item.modifier != null and item.modifier != ''">
+                    modifier = #{item.modifier},
+                </if>
+                <if test="item.modifiedon != null">
+                    modifiedon = #{item.modifiedon},
+                </if>
+                <if test="item.isDel != null">
+                    is_del = #{item.isDel},
+                </if>
+            </set>
+            WHERE 1 = 1
+            AND menu_id = #{item.menuId};
+        </foreach>
+    </update>
+
+    <select id="queryById" parameterType="java.lang.Long" resultType="com.example.demo.model.WechatMenuDO">
+	   	SELECT
+		menu_id,
+		app_id,
+		menu_name,
+		menu_leve,
+		menu_pid,
+		is_enable,
+		sort,
+		menu_type,
+		url,
+		event_type,
+		msg_id,
+		input_code,
+		creator_id,
+		creator,
+		createdon,
+		modifier_id,
+		modifier,
+		modifiedon,
+		is_del
+       	FROM trans_wechat_menu
+       	WHERE menu_id = #{value}
+    </select>
+
+    <select id="query" parameterType="com.example.demo.model.WechatMenuDO"
+            resultType="com.example.demo.model.WechatMenuDO">
+        SELECT
+        menu_id,
+        app_id,
+        menu_name,
+        menu_leve,
+        menu_pid,
+        is_enable,
+        sort,
+        menu_type,
+        url,
+        event_type,
+        msg_id,
+        input_code,
+        creator_id,
+        creator,
+        createdon,
+        modifier_id,
+        modifier,
+        modifiedon,
+        is_del
+        FROM trans_wechat_menu
+        <where>
+            <if test="menuId != null">
+                AND menu_id = #{menuId}
+            </if>
+            <if test="appId != null and appId != ''">
+                AND app_id = #{appId}
+            </if>
+            <if test="menuName != null and menuName != ''">
+                AND menu_name = #{menuName}
+            </if>
+            <if test="menuLeve != null">
+                AND menu_leve = #{menuLeve}
+            </if>
+            <if test="menuPid != null">
+                AND menu_pid = #{menuPid}
+            </if>
+            <if test="isEnable != null">
+                AND is_enable = #{isEnable}
+            </if>
+            <if test="sort != null">
+                AND sort = #{sort}
+            </if>
+            <if test="menuType != null and menuType != ''">
+                AND menu_type = #{menuType}
+            </if>
+            <if test="url != null and url != ''">
+                AND url = #{url}
+            </if>
+            <if test="eventType != null and eventType != ''">
+                AND event_type = #{eventType}
+            </if>
+            <if test="msgId != null">
+                AND msg_id = #{msgId}
+            </if>
+            <if test="inputCode != null and inputCode != ''">
+                AND input_code = #{inputCode}
+            </if>
+            <if test="creatorId != null">
+                AND creator_id = #{creatorId}
+            </if>
+            <if test="creator != null and creator != ''">
+                AND creator = #{creator}
+            </if>
+            <if test="createdon != null">
+                AND createdon = #{createdon}
+            </if>
+            <if test="modifierId != null">
+                AND modifier_id = #{modifierId}
+            </if>
+            <if test="modifier != null and modifier != ''">
+                AND modifier = #{modifier}
+            </if>
+            <if test="modifiedon != null">
+                AND modifiedon = #{modifiedon}
+            </if>
+            <if test="isDel != null">
+                AND is_del = #{isDel}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryCount" parameterType="com.example.demo.model.WechatMenuDO" resultType="java.lang.Integer">
+        select count(*) FROM trans_wechat_menu
+        <where>
+            <if test="menuId != null">
+                AND menu_id = #{menuId}
+            </if>
+            <if test="appId != null and appId != ''">
+                AND app_id = #{appId}
+            </if>
+            <if test="menuName != null and menuName != ''">
+                AND menu_name = #{menuName}
+            </if>
+            <if test="menuLeve != null">
+                AND menu_leve = #{menuLeve}
+            </if>
+            <if test="menuPid != null">
+                AND menu_pid = #{menuPid}
+            </if>
+            <if test="isEnable != null">
+                AND is_enable = #{isEnable}
+            </if>
+            <if test="sort != null">
+                AND sort = #{sort}
+            </if>
+            <if test="menuType != null and menuType != ''">
+                AND menu_type = #{menuType}
+            </if>
+            <if test="url != null and url != ''">
+                AND url = #{url}
+            </if>
+            <if test="eventType != null and eventType != ''">
+                AND event_type = #{eventType}
+            </if>
+            <if test="msgId != null">
+                AND msg_id = #{msgId}
+            </if>
+            <if test="inputCode != null and inputCode != ''">
+                AND input_code = #{inputCode}
+            </if>
+            <if test="creatorId != null">
+                AND creator_id = #{creatorId}
+            </if>
+            <if test="creator != null and creator != ''">
+                AND creator = #{creator}
+            </if>
+            <if test="createdon != null">
+                AND createdon = #{createdon}
+            </if>
+            <if test="modifierId != null">
+                AND modifier_id = #{modifierId}
+            </if>
+            <if test="modifier != null and modifier != ''">
+                AND modifier = #{modifier}
+            </if>
+            <if test="modifiedon != null">
+                AND modifiedon = #{modifiedon}
+            </if>
+            <if test="isDel != null">
+                AND is_del = #{isDel}
+            </if>
+        </where>
+    </select>
+</mapper>

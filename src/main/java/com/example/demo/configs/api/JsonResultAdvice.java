@@ -5,6 +5,8 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -13,6 +15,7 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -24,12 +27,21 @@ import java.util.Map;
 @Log4j2
 @ControllerAdvice
 public class JsonResultAdvice implements ResponseBodyAdvice<Object> {
+
+    @Value("${response.body.support.exclude}")
+    private String excludeMethodName;
+
     public JsonResultAdvice() {
         // Do nothing
     }
 
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
+        if (StringUtils.isNotBlank(excludeMethodName)) {
+            if (Arrays.asList(excludeMethodName.split(",")).contains(returnType.getMethod().getName())) {
+                return false;
+            }
+        }
         return FastJsonHttpMessageConverter.class.isAssignableFrom(converterType);
     }
 
