@@ -1,7 +1,8 @@
-package com.example.demo.wechat;
+package com.example.demo.wechat.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.example.demo.model.WechatMenuDO;
+import com.example.demo.model.WechatOfficialAccountMenuDO;
+import com.example.demo.wechat.constant.MenuTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -24,27 +25,26 @@ public class MenuUtil {
      * @param menus 菜单列表
      * @return
      */
-    public static String prepareMenus(List<WechatMenuDO> menus) {
+    public static String prepareMenus(List<WechatOfficialAccountMenuDO> menus) {
         if (CollectionUtils.isEmpty(menus)) {
             return "error";
         }
-        List<Object> menulists = new ArrayList<>();
-        for (WechatMenuDO menu : menus) {
+        List<Object> menuList = new ArrayList<>();
+        for (WechatOfficialAccountMenuDO menu : menus) {
             if (menu.getMenuPid().equals(0L)) {
                 // 一级菜单
                 Map<String, Object> menuMap = new HashMap<>();
                 menuMap.put("pMenu", menu);
-                menulists.add(menuMap);
+                menuList.add(menuMap);
             }
         }
 
-        for (Object object : menulists) {
+        for (Object object : menuList) {
             Map<String, Object> maps = (Map<String, Object>) object;
-            List<WechatMenuDO> cMenu = new ArrayList<>();
-            WechatMenuDO pMenu = (WechatMenuDO) maps.get("pMenu");
-            for (WechatMenuDO menu : menus) {
+            List<WechatOfficialAccountMenuDO> cMenu = new ArrayList<>();
+            WechatOfficialAccountMenuDO pMenu = (WechatOfficialAccountMenuDO) maps.get("pMenu");
+            for (WechatOfficialAccountMenuDO menu : menus) {
                 Boolean bool = menu.getMenuPid().equals(pMenu.getMenuId() + "");
-                System.out.println(bool);
                 if (menu.getMenuPid().equals(pMenu.getMenuId() + "")) {
                     cMenu.add(menu);
                 }
@@ -52,17 +52,16 @@ public class MenuUtil {
             maps.put("cMenu", cMenu);
         }
 
-
         Map<String, Object> jsonMap = new HashMap<>();
         List<Object> jsonMapList = new ArrayList<>();
-        for (Object object : menulists) {
+        for (Object object : menuList) {
             Map<String, Object> maps = (Map<String, Object>) object;
-            WechatMenuDO pMenu = (WechatMenuDO) maps.get("pMenu");
-            List<WechatMenuDO> cMenu = (List<WechatMenuDO>) maps.get("cMenu");
+            WechatOfficialAccountMenuDO pMenu = (WechatOfficialAccountMenuDO) maps.get("pMenu");
+            List<WechatOfficialAccountMenuDO> cMenu = (List<WechatOfficialAccountMenuDO>) maps.get("cMenu");
 
             if (cMenu.size() > 0) {
                 List<Map<String, Object>> mapList = new ArrayList<>();
-                for (WechatMenuDO wxMenu : cMenu) {
+                for (WechatOfficialAccountMenuDO wxMenu : cMenu) {
                     mapList.add(getMenuMap(wxMenu));
                 }
                 jsonMapList.add(getParentMenuMap(pMenu, mapList));
@@ -84,24 +83,30 @@ public class MenuUtil {
      * @param menu
      * @return
      */
-    private static Map<String, Object> getMenuMap(WechatMenuDO menu) {
+    private static Map<String, Object> getMenuMap(WechatOfficialAccountMenuDO menu) {
         Map<String, Object> map = new HashMap<>();
         map.put("name", menu.getMenuName());
         map.put("type", menu.getMenuType());
-        if ("click".equals(menu.getMenuType())) {
+        if (MenuTypeEnum.CLICK.getType().equals(menu.getMenuType())) {
             // 事件菜单
             if ("fix".equals(menu.getEventType())) {
                 // fix 消息
                 // 以 _fix_ 开头
                 map.put("key", "_fix_" + menu.getMsgId());
             } else {
-                if (StringUtils.isEmpty(menu.getInputCode())) {
+                if (StringUtils.isEmpty(menu.getKeyword())) {
                     // 如果inputcode 为空，默认设置为 subscribe，以免创建菜单失败
                     map.put("key", "subscribe");
                 } else {
-                    map.put("key", menu.getInputCode());
+                    map.put("key", menu.getKeyword());
                 }
             }
+        } else if ("miniprogram".equals(menu.getMenuType())) {
+            map.put("url", menu.getUrl());
+            map.put("appid", menu.getMiniProgramAppId());
+            map.put("pagepath", menu.getPagePath());
+        } else if ("scancode_push".equals(menu.getMenuType())) {
+            map.put("key", menu.getKeyword());
         } else {
             // 链接菜单-view
             map.put("url", menu.getUrl());
@@ -109,7 +114,7 @@ public class MenuUtil {
         return map;
     }
 
-    private static Map<String, Object> getParentMenuMap(WechatMenuDO menu, List<Map<String, Object>> mapList) {
+    private static Map<String, Object> getParentMenuMap(WechatOfficialAccountMenuDO menu, List<Map<String, Object>> mapList) {
         Map<String, Object> map = new HashMap<>();
         map.put("name", menu.getMenuName());
         map.put("sub_button", mapList);

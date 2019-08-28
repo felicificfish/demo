@@ -18,10 +18,10 @@ import java.util.Date;
  * @since 2019/5/6
  */
 @Data
-@Table(name = "wealth_wechat_official_account")
+@Table(name = "trans_wechat_official_account_user")
 @EqualsAndHashCode(of = "openid")
 @Alias("wechatOfficialAccount")
-public class WechatOfficialAccountDO implements Serializable {
+public class WechatOfficialAccountUserDO implements Serializable {
     /**
      * 用户的标识，对当前公众号唯一
      */

@@ -1,4 +1,4 @@
-package com.example.demo.wechat;
+package com.example.demo.wechat.utils;
 
 import java.security.MessageDigest;
 

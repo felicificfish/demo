@@ -1,8 +1,8 @@
-package com.example.demo.wechat;
+package com.example.demo.wechat.service;
 
-import com.example.demo.dao.WechatMenuMapper;
 import com.example.demo.wechat.model.WeChatInputMsg;
 import com.example.demo.wechat.model.WeChatTextMsg;
+import com.example.demo.wechat.utils.WeChatMsgUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import java.util.Objects;
 public class WeChatResponseMsgService {
     public static final String WELCOME_MSG = "您好，感谢您的关注！";
     @Autowired
-    private WeChatService weChatService;
+    private WeChatOfficialAccountApiService weChatOfficialAccountApiService;
 
     public String processMsg(WeChatInputMsg inputMsg) {
         String msgType = inputMsg.getMsgType();
@@ -66,7 +66,7 @@ public class WeChatResponseMsgService {
             // 关注公众号
             String openId = inputMessage.getFromUserName();
             if (!StringUtils.isEmpty(openId)) {
-                weChatService.getUserInfoAndSave(openId);
+                weChatOfficialAccountApiService.getUserInfoAndSave(openId);
             }
             inputMessage.setContent(WELCOME_MSG);
             response = processTextMsg(inputMessage, WELCOME_MSG);

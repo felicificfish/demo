@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.example.demo.dao.WechatOfficialAccountMapper">
+<mapper namespace="com.example.demo.dao.WechatOfficialAccountUserMapper">
     <sql id="full-columns">
         t.openid,
         t.unionid,
@@ -23,8 +23,8 @@
         t.createdon,
         t.modifiedon
     </sql>
-    <insert id="insertOne" parameterType="com.example.demo.model.WechatOfficialAccountDO">
-        INSERT INTO wealth_wechat_official_account (
+    <insert id="insertOne" parameterType="com.example.demo.model.WechatOfficialAccountUserDO">
+        INSERT INTO trans_wechat_official_account_user (
         <if test="openid != null">
             openid,
         </if>
@@ -143,8 +143,8 @@
         )
     </insert>
 
-    <update id="update" parameterType="com.example.demo.model.WechatOfficialAccountDO">
-        UPDATE wealth_wechat_official_account
+    <update id="update" parameterType="com.example.demo.model.WechatOfficialAccountUserDO">
+        UPDATE trans_wechat_official_account_user
         <set>
             <if test="unionid != null and unionid != ''">
                 unionid = #{unionid},
@@ -205,6 +205,6 @@
     </update>
 
     <select id="selectCountByPrimaryKey" resultType="java.lang.Integer">
-        select count(openid) FROM wealth_wechat_official_account WHERE openid = #{value}
+        select count(openid) FROM trans_wechat_official_account_user WHERE openid = #{value}
     </select>
 </mapper>

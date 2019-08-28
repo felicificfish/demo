@@ -1,4 +1,4 @@
-package com.example.demo.wechat;
+package com.example.demo.wechat.utils;
 
 import lombok.extern.log4j.Log4j2;
 

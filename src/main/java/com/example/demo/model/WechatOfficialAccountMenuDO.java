@@ -10,18 +10,17 @@ import java.util.Date;
 
 
 /**
- * 微信公众号菜单信息实体
+ * 微信公众号菜单信息
  *
  * @author zhou.xy
- * @since 2019/6/10
+ * @since 2019/8/28
  */
 @Data
-@Table(name = "trans_wechat_menu")
+@Table(name = "trans_wechat_official_account_menu")
 @EqualsAndHashCode(of = "menuId")
-@Alias("wechatMenu")
-public class WechatMenuDO implements Serializable {
-    private static final long serialVersionUID = 1L;
-
+@Alias("wechatOfficialAccountMenu")
+public class WechatOfficialAccountMenuDO implements Serializable {
+    private static final long serialVersionUID = -8189097779277957289L;
     /**
      * 菜单ID
      */
@@ -30,6 +29,18 @@ public class WechatMenuDO implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long menuId;
     /**
+     * 上级菜单ID
+     */
+    private Long menuPid;
+    /**
+     * 菜单id路径，如：1,2,3
+     */
+    private String menuPath;
+    /**
+     * 菜单等级：1-一级菜单；2-二级菜单；...
+     */
+    private Integer menuLevel;
+    /**
      * 公众号开发者ID
      */
     private String appId;
@@ -37,14 +48,6 @@ public class WechatMenuDO implements Serializable {
      * 菜单名称
      */
     private String menuName;
-    /**
-     * 菜单等级
-     */
-    private Integer menuLeve;
-    /**
-     * 上级菜单ID
-     */
-    private Long menuPid;
     /**
      * 是否启用：1-启用；0-禁用
      */
@@ -58,9 +61,17 @@ public class WechatMenuDO implements Serializable {
      */
     private String menuType;
     /**
+     * 小程序的页面路径
+     */
+    private String pagePath;
+    /**
      * 地址
      */
     private String url;
+    /**
+     * 小程序的appid（仅认证公众号可配置）
+     */
+    private String miniProgramAppId;
     /**
      * 消息类型
      */
@@ -72,7 +83,7 @@ public class WechatMenuDO implements Serializable {
     /**
      * 关键字
      */
-    private String inputCode;
+    private String keyword;
     /**
      * 创建人ID
      */

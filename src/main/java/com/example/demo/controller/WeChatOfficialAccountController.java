@@ -1,21 +1,24 @@
 package com.example.demo.controller;
 
 import com.example.demo.configs.exception.ValidateException;
-import com.example.demo.wechat.WeChatMsgUtil;
-import com.example.demo.wechat.WeChatResponseMsgService;
-import com.example.demo.wechat.WeChatService;
-import com.example.demo.wechat.WeChatUtil;
+import com.example.demo.model.WechatOfficialAccountMenuDO;
+import com.example.demo.wechat.utils.WeChatMsgUtil;
+import com.example.demo.wechat.service.WeChatResponseMsgService;
+import com.example.demo.wechat.service.WeChatOfficialAccountService;
+import com.example.demo.wechat.utils.WeChatUtil;
 import com.example.demo.wechat.model.WeChatInputMsg;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -28,17 +31,13 @@ import java.util.Objects;
 @Log4j2
 @RestController
 public class WeChatOfficialAccountController {
-    @Value("${wechat.appId}")
-    public String appId;
-    @Value("${wechat.appSecret}")
-    public String appSecret;
     @Value("${wechat.token}")
     public String wechatToken;
 
     @Autowired
     private WeChatResponseMsgService weChatResponseMsgService;
     @Autowired
-    private WeChatService weChatService;
+    private WeChatOfficialAccountService weChatService;
 
     /**
      * 微信公众号与开发者服务器交互
@@ -92,17 +91,48 @@ public class WeChatOfficialAccountController {
     /**
      * 发布菜单
      *
-     * @param publicAccount
+     * @param appId
      * @return void
      * @author zhou.xy
      * @date 2019/8/27
      * @since 1.0
      */
     @GetMapping(value = "/wechat/menu/publish")
-    public void publishMenu(String publicAccount) {
-        if (StringUtils.isEmpty(publicAccount)) {
-            throw new ValidateException("公众账号不能为空");
+    public void publishMenu(String appId) {
+        if (StringUtils.isEmpty(appId)) {
+            throw new ValidateException("公众号不能为空");
         }
-        weChatService.publishMenu(publicAccount, 1L, "admin");
+        weChatService.publishMenu(appId, 1L, "admin");
+    }
+
+    /**
+     * 获取菜单数据
+     *
+     * @param appId
+     * @return java.util.List<com.example.demo.model.WechatOfficialAccountMenuDO>
+     * @author zhou.xy
+     * @date 2019/8/28
+     * @since 1.0
+     */
+    @GetMapping(value = "/wechat/menuList")
+    public List<WechatOfficialAccountMenuDO> queryMenuList(String appId) {
+        if (StringUtils.isEmpty(appId)) {
+            throw new ValidateException("公众号不能为空");
+        }
+        return weChatService.queryMenuList(appId);
+    }
+
+    /**
+     * 删除菜单
+     *
+     * @param menuIds
+     * @return void
+     * @author zhou.xy
+     * @date 2019/8/28
+     * @since 1.0
+     */
+    @DeleteMapping(value = "/wechat/menu/delete")
+    public void deleteMenu(String menuIds) {
+        log.info("delete menuIds : {}", menuIds);
     }
 }

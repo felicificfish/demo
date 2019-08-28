@@ -1,4 +1,4 @@
-package com.example.demo.wechat;
+package com.example.demo.wechat.utils;
 
 import com.example.demo.wechat.model.WeChatArticleMsg;
 import com.example.demo.wechat.model.WeChatGraphicMsg;

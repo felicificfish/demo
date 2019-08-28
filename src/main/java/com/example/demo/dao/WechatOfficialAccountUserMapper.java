@@ -2,7 +2,7 @@
 package com.example.demo.dao;
 
 import com.example.demo.configs.mapper.base.BaseMapper;
-import com.example.demo.model.WechatOfficialAccountDO;
+import com.example.demo.model.WechatOfficialAccountUserDO;
 
 /**
  * 微信关注用户CRUD操作
@@ -10,10 +10,10 @@ import com.example.demo.model.WechatOfficialAccountDO;
  * @author zhou.xy
  * @since 2019/5/6
  */
-public interface WechatOfficialAccountMapper extends BaseMapper<WechatOfficialAccountDO> {
-    int insertOne(WechatOfficialAccountDO wechatOfficialAccount);
+public interface WechatOfficialAccountUserMapper extends BaseMapper<WechatOfficialAccountUserDO> {
+    int insertOne(WechatOfficialAccountUserDO wechatOfficialAccount);
 
-    int update(WechatOfficialAccountDO wechatOfficialAccount);
+    int update(WechatOfficialAccountUserDO wechatOfficialAccount);
 
     /**
      * 查询微信关注用户是否存在
