@@ -111,6 +111,7 @@ public class WeChatMsgUtil {
      * 事件类型：VIEW（点击菜单跳转链接事件）
      */
     public static final String EVENT_TYPE_VIEW = "VIEW";
+
     private static XStream xstream = new XStream(new XppDriver() {
         @Override
         public PrettyPrintWriter createWriter(Writer out) {
