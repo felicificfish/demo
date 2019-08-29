@@ -46,6 +46,25 @@ public class WeChatOfficialAccountService {
     }
 
     /**
+     * 查询菜单
+     *
+     * @param appId     公众号开发者ID
+     * @param menuLevel 菜单等级：1-一级菜单；2-二级菜单；
+     * @return java.util.List<com.example.demo.model.WechatOfficialAccountMenuDO>
+     * @author zhou.xy
+     * @date 2019/8/28
+     * @since 1.0
+     */
+    public List<WechatOfficialAccountMenuDO> queryMenuList(String appId, Integer menuLevel) {
+        Example example = new Example(WechatOfficialAccountMenuDO.class);
+        example.createCriteria().andEqualTo("isDel", 0)
+                .andEqualTo("appId", appId)
+                .andEqualTo("menuLevel", menuLevel);
+        example.setOrderByClause("menu_level ASC, sort ASC");
+        return wechatOfficialAccountMenuMapper.selectByExample(example);
+    }
+
+    /**
      * 发布菜单
      *
      * @param appId    公众号开发者ID

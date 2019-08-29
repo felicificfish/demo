@@ -33,10 +33,6 @@ public class WechatOfficialAccountMenuDO implements Serializable {
      */
     private Long menuPid;
     /**
-     * 菜单id路径，如：1,2,3
-     */
-    private String menuPath;
-    /**
      * 菜单等级：1-一级菜单；2-二级菜单；...
      */
     private Integer menuLevel;
@@ -72,10 +68,6 @@ public class WechatOfficialAccountMenuDO implements Serializable {
      * 小程序的appid（仅认证公众号可配置）
      */
     private String miniProgramAppId;
-    /**
-     * 消息类型
-     */
-    private String eventType;
     /**
      * 消息Id
      */

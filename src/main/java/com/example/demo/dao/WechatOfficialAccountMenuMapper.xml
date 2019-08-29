@@ -4,7 +4,6 @@
     <sql id="full-columns">
         t.menu_id,
         t.menu_pid,
-        t.menu_path,
         t.menu_level,
         t.app_id,
         t.menu_name,
@@ -14,7 +13,6 @@
         t.page_path,
         t.url,
         t.mini_program_app_id,
-        t.event_type,
         t.msg_id,
         t.keyword,
         t.creator_id,
@@ -29,9 +27,6 @@
         INSERT INTO trans_wechat_official_account_menu (
         <if test="menuPid != null">
             menu_pid,
-        </if>
-        <if test="menuPath != null and menuPath != ''">
-            menu_path,
         </if>
         <if test="menuLevel != null">
             menu_level,
@@ -60,9 +55,6 @@
         <if test="miniProgramAppId != null and miniProgramAppId != ''">
             mini_program_app_id,
         </if>
-        <if test="eventType != null and eventType != ''">
-            event_type,
-        </if>
         <if test="msgId != null">
             msg_id,
         </if>
@@ -84,9 +76,6 @@
         ) VALUES (
         <if test="menuPid != null">
             #{menuPid},
-        </if>
-        <if test="menuPath != null and menuPath != ''">
-            #{menuPath},
         </if>
         <if test="menuLevel != null">
             #{menuLevel},
@@ -114,9 +103,6 @@
         </if>
         <if test="miniProgramAppId != null and miniProgramAppId != ''">
             #{miniProgramAppId},
-        </if>
-        <if test="eventType != null and eventType != ''">
-            #{eventType},
         </if>
         <if test="msgId != null">
             #{msgId},
@@ -148,9 +134,6 @@
             <if test="item.menuPid != null">
                 menu_pid,
             </if>
-            <if test="item.menuPath != null and item.menuPath != ''">
-                menu_path,
-            </if>
             <if test="item.menuLevel != null">
                 menu_level,
             </if>
@@ -178,9 +161,6 @@
             <if test="item.miniProgramAppId != null and item.miniProgramAppId != ''">
                 mini_program_app_id,
             </if>
-            <if test="item.eventType != null and item.eventType != ''">
-                event_type,
-            </if>
             <if test="item.msgId != null">
                 msg_id,
             </if>
@@ -202,9 +182,6 @@
             ) VALUES (
             <if test="item.menuPid != null">
                 #{item.menuPid},
-            </if>
-            <if test="item.menuPath != null and item.menuPath != ''">
-                #{item.menuPath},
             </if>
             <if test="item.menuLevel != null">
                 #{item.menuLevel},
@@ -232,9 +209,6 @@
             </if>
             <if test="item.miniProgramAppId != null and item.miniProgramAppId != ''">
                 #{item.miniProgramAppId},
-            </if>
-            <if test="item.eventType != null and item.eventType != ''">
-                #{item.eventType},
             </if>
             <if test="item.msgId != null">
                 #{item.msgId},
@@ -264,9 +238,6 @@
             <if test="menuPid != null">
                 menu_pid = #{menuPid},
             </if>
-            <if test="menuPath != null and menuPath != ''">
-                menu_path = #{menuPath},
-            </if>
             <if test="menuLevel != null">
                 menu_level = #{menuLevel},
             </if>
@@ -293,9 +264,6 @@
             </if>
             <if test="miniProgramAppId != null and miniProgramAppId != ''">
                 mini_program_app_id = #{miniProgramAppId},
-            </if>
-            <if test="eventType != null and eventType != ''">
-                event_type = #{eventType},
             </if>
             <if test="msgId != null">
                 msg_id = #{msgId},
@@ -327,9 +295,6 @@
                 <if test="item.menuPid != null">
                     menu_pid = #{item.menuPid},
                 </if>
-                <if test="item.menuPath != null and item.menuPath != ''">
-                    menu_path = #{item.menuPath},
-                </if>
                 <if test="item.menuLevel != null">
                     menu_level = #{item.menuLevel},
                 </if>
@@ -356,9 +321,6 @@
                 </if>
                 <if test="item.miniProgramAppId != null and item.miniProgramAppId != ''">
                     mini_program_app_id = #{item.miniProgramAppId},
-                </if>
-                <if test="item.eventType != null and item.eventType != ''">
-                    event_type = #{item.eventType},
                 </if>
                 <if test="item.msgId != null">
                     msg_id = #{item.msgId},
@@ -389,7 +351,6 @@
 	   	SELECT
 		menu_id,
 		menu_pid,
-		menu_path,
 		menu_level,
 		app_id,
 		menu_name,
@@ -399,7 +360,6 @@
 		page_path,
 		url,
 		mini_program_app_id,
-		event_type,
 		msg_id,
 		keyword,
 		creator_id,
@@ -418,7 +378,6 @@
         SELECT
         menu_id,
         menu_pid,
-        menu_path,
         menu_level,
         app_id,
         menu_name,
@@ -428,7 +387,6 @@
         page_path,
         url,
         mini_program_app_id,
-        event_type,
         msg_id,
         keyword,
         creator_id,
@@ -445,9 +403,6 @@
             </if>
             <if test="menuPid != null">
                 AND menu_pid = #{menuPid}
-            </if>
-            <if test="menuPath != null and menuPath != ''">
-                AND menu_path = #{menuPath}
             </if>
             <if test="menuLevel != null">
                 AND menu_level = #{menuLevel}
@@ -475,9 +430,6 @@
             </if>
             <if test="miniProgramAppId != null and miniProgramAppId != ''">
                 AND mini_program_app_id = #{miniProgramAppId}
-            </if>
-            <if test="eventType != null and eventType != ''">
-                AND event_type = #{eventType}
             </if>
             <if test="msgId != null">
                 AND msg_id = #{msgId}
@@ -519,9 +471,6 @@
             <if test="menuPid != null">
                 AND menu_pid = #{menuPid}
             </if>
-            <if test="menuPath != null and menuPath != ''">
-                AND menu_path = #{menuPath}
-            </if>
             <if test="menuLevel != null">
                 AND menu_level = #{menuLevel}
             </if>
@@ -548,9 +497,6 @@
             </if>
             <if test="miniProgramAppId != null and miniProgramAppId != ''">
                 AND mini_program_app_id = #{miniProgramAppId}
-            </if>
-            <if test="eventType != null and eventType != ''">
-                AND event_type = #{eventType}
             </if>
             <if test="msgId != null">
                 AND msg_id = #{msgId}

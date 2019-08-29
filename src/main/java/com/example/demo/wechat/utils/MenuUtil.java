@@ -89,17 +89,11 @@ public class MenuUtil {
         map.put("type", menu.getMenuType());
         if (MenuTypeEnum.CLICK.getType().equals(menu.getMenuType())) {
             // 事件菜单
-            if ("fix".equals(menu.getEventType())) {
-                // fix 消息
-                // 以 _fix_ 开头
-                map.put("key", "_fix_" + menu.getMsgId());
+            if (StringUtils.isEmpty(menu.getKeyword())) {
+                // 如key为空，默认设置为 subscribe，以免创建菜单失败
+                map.put("key", "subscribe");
             } else {
-                if (StringUtils.isEmpty(menu.getKeyword())) {
-                    // 如果inputcode 为空，默认设置为 subscribe，以免创建菜单失败
-                    map.put("key", "subscribe");
-                } else {
-                    map.put("key", menu.getKeyword());
-                }
+                map.put("key", menu.getKeyword());
             }
         } else if ("miniprogram".equals(menu.getMenuType())) {
             map.put("url", menu.getUrl());
