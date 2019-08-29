@@ -398,6 +398,7 @@
         is_del
         FROM trans_wechat_official_account_menu
         <where>
+            is_del = 0
             <if test="menuId != null">
                 AND menu_id = #{menuId}
             </if>
@@ -455,10 +456,8 @@
             <if test="modifiedon != null">
                 AND modifiedon = #{modifiedon}
             </if>
-            <if test="isDel != null">
-                AND is_del = #{isDel}
-            </if>
         </where>
+        ORDER BY menu_level ASC, sort ASC
     </select>
 
     <select id="queryCount" parameterType="com.example.demo.model.WechatOfficialAccountMenuDO"

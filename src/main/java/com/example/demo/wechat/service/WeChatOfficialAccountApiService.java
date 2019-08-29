@@ -119,7 +119,7 @@ public class WeChatOfficialAccountApiService {
         } catch (Exception e) {
             log.error("发送模板消息异常，参数：{}，异常消息：{}", JSON.toJSONString(templateMsg), e.getMessage());
         }
-        return null;
+        return new JSONObject();
     }
 
     /**
@@ -203,11 +203,11 @@ public class WeChatOfficialAccountApiService {
         } catch (Exception e) {
             log.error("获取用户基本信息异常，异常消息：{}", e.getMessage());
         }
-        return null;
+        return new JSONObject();
     }
 
     /**
-     * 创建菜单
+     * 创建自定义菜单
      *
      * @param menus
      * @return com.alibaba.fastjson.JSONObject
@@ -217,7 +217,10 @@ public class WeChatOfficialAccountApiService {
      */
     public JSONObject menuCreate(String menus) {
         if (StringUtils.isEmpty(menus)) {
-            return null;
+            JSONObject errorObj = new JSONObject();
+            errorObj.put("errcode", "99999");
+            errorObj.put("errmsg", "没有可发布的菜单");
+            return errorObj;
         }
         String menuCreateUrl = String.format("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s",
                 getWeChatAccessToken());
@@ -234,8 +237,28 @@ public class WeChatOfficialAccountApiService {
 //            weChatOfficialApiService.asyncSave(weChatOfficialApiDO);
             return jsonObject;
         } catch (Exception e) {
-            log.error("创建菜单异常，参数：{}，异常消息：{}", menus, e.getMessage());
+            log.error("创建自定义菜单异常，参数：{}，异常消息：{}", menus, e.getMessage());
         }
-        return null;
+        return new JSONObject();
+    }
+
+    /**
+     * 删除自定义菜单
+     *
+     * @param
+     * @return com.alibaba.fastjson.JSONObject
+     * @author zhou.xy
+     * @date 2019/8/29
+     * @since 1.0
+     */
+    public JSONObject menuDelete() {
+        String menuDeleteUrl = String.format("https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=%s",
+                getWeChatAccessToken());
+        try {
+            return restTemplate.getForObject(menuDeleteUrl, JSONObject.class);
+        } catch (Exception e) {
+            log.error("删除自定义菜单异常，异常消息：{}", e.getMessage());
+        }
+        return new JSONObject();
     }
 }

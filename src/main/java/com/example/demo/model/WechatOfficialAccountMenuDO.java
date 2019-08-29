@@ -7,6 +7,7 @@ import org.apache.ibatis.type.Alias;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -104,4 +105,10 @@ public class WechatOfficialAccountMenuDO implements Serializable {
      * 是否删除：0-否，1-是
      */
     private Integer isDel;
+
+    /**
+     * 子菜单
+     */
+    @Transient
+    private List<WechatOfficialAccountMenuDO> children;
 }

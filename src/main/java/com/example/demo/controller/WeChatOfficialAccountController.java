@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.configs.exception.ValidateException;
+import com.example.demo.controller.dto.WechatOfficialAccountMenuDTO;
 import com.example.demo.controller.vo.WechatOfficialAccountMenuVO;
 import com.example.demo.model.WechatOfficialAccountMenuDO;
 import com.example.demo.wechat.model.WeChatInputMsg;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,7 +42,7 @@ public class WeChatOfficialAccountController {
     @Autowired
     private WeChatResponseMsgService weChatResponseMsgService;
     @Autowired
-    private WeChatOfficialAccountService weChatService;
+    private WeChatOfficialAccountService weChatOfficialAccountService;
 
     /**
      * 微信公众号与开发者服务器交互
@@ -107,24 +107,38 @@ public class WeChatOfficialAccountController {
         if (StringUtils.isEmpty(appId)) {
             throw new ValidateException("公众号不能为空");
         }
-        weChatService.publishMenu(appId, 1L, "admin");
+        weChatOfficialAccountService.publishMenu(appId, 1L, "admin");
+    }
+
+    /**
+     * 删除已发布菜单
+     *
+     * @param
+     * @return void
+     * @author zhou.xy
+     * @date 2019/8/29
+     * @since 1.0
+     */
+    @GetMapping(value = "/wechat/menu/revoke")
+    public void revokeMenu() {
+        weChatOfficialAccountService.revokeMenu(1L, "admin");
     }
 
     /**
      * 获取菜单数据
      *
-     * @param appId 公众号开发者ID
+     * @param menuDO
      * @return java.util.List<com.example.demo.model.WechatOfficialAccountMenuDO>
      * @author zhou.xy
      * @date 2019/8/28
      * @since 1.0
      */
     @GetMapping(value = "/wechat/menuList")
-    public List<WechatOfficialAccountMenuDO> queryMenuList(String appId) {
-        if (StringUtils.isEmpty(appId)) {
+    public List<WechatOfficialAccountMenuDO> queryMenuList(WechatOfficialAccountMenuDO menuDO) {
+        if (StringUtils.isEmpty(menuDO.getAppId())) {
             throw new ValidateException("公众号不能为空");
         }
-        return weChatService.queryMenuList(appId);
+        return weChatOfficialAccountService.queryMenuList(menuDO);
     }
 
     /**
@@ -146,7 +160,7 @@ public class WeChatOfficialAccountController {
             throw new ValidateException("菜单等级不能为空");
         }
         List<WechatOfficialAccountMenuVO> menuVOList = new ArrayList<>();
-        List<WechatOfficialAccountMenuDO> menuDOList = weChatService.queryMenuList(appId, menuLevel);
+        List<WechatOfficialAccountMenuDO> menuDOList = weChatOfficialAccountService.queryMenuList(appId, menuLevel);
         if (!CollectionUtils.isEmpty(menuDOList)) {
             for (WechatOfficialAccountMenuDO menuDO : menuDOList) {
                 WechatOfficialAccountMenuVO menuVO = new WechatOfficialAccountMenuVO();
@@ -169,5 +183,22 @@ public class WeChatOfficialAccountController {
     @DeleteMapping(value = "/wechat/menu/delete")
     public void deleteMenu(String menuIds) {
         log.info("delete menuIds : {}", menuIds);
+        // TODO
+    }
+
+    /**
+     * 新增菜单
+     *
+     * @param menuDTO
+     * @return void
+     * @author zhou.xy
+     * @date 2019/8/29
+     * @since 1.0
+     */
+    @PostMapping("/wechat/menu/add")
+    public void addMenu(WechatOfficialAccountMenuDTO menuDTO) {
+        WechatOfficialAccountMenuDO menuDO = new WechatOfficialAccountMenuDO();
+        BeanUtils.copyProperties(menuDTO, menuDO);
+        weChatOfficialAccountService.addMenu(menuDO, 1L, "admin");
     }
 }

@@ -74,7 +74,7 @@ public class WeChatResponseMsgService {
             // TODO 取消订阅消息
             response = "OK";
         } else {
-            // TODO 点击事件消息
+            // TODO 点击事件消息 动态配置
             if (!StringUtils.isEmpty(key)) {
                 switch (key.toUpperCase()) {
                     case "LIKE":
