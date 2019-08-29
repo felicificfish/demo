@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.configs.exception.ValidateException;
 import com.example.demo.controller.dto.WechatOfficialAccountMenuDTO;
 import com.example.demo.controller.vo.WechatOfficialAccountMenuVO;
@@ -200,5 +201,28 @@ public class WeChatOfficialAccountController {
         WechatOfficialAccountMenuDO menuDO = new WechatOfficialAccountMenuDO();
         BeanUtils.copyProperties(menuDTO, menuDO);
         weChatOfficialAccountService.addMenu(menuDO, 1L, "admin");
+    }
+
+    /**
+     * 发送模板消息
+     *
+     * @param openId
+     * @param templateId
+     * @param jumpUrl
+     * @param title
+     * @param name
+     * @param pName
+     * @param date
+     * @param remark
+     * @return com.alibaba.fastjson.JSONObject
+     * @author zhou.xy
+     * @date 2019/8/29
+     * @since 1.0
+     */
+    @PostMapping("/wechat/templateMsg/send")
+    public JSONObject sendTemplateMsg(String openId, String templateId, String jumpUrl,
+                                      String title, String name,
+                                      String pName, String date, String remark) {
+        return weChatOfficialAccountService.sendTemplateMsg(openId, templateId, jumpUrl, title, name, pName, date, remark);
     }
 }

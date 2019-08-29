@@ -6,6 +6,8 @@ import com.example.demo.configs.mapper.entity.Example;
 import com.example.demo.dao.WechatOfficialAccountMenuMapper;
 import com.example.demo.model.WechatOfficialAccountMenuDO;
 import com.example.demo.wechat.constant.MenuTypeEnum;
+import com.example.demo.wechat.model.WeChatTemplateData;
+import com.example.demo.wechat.model.WeChatTemplateMsg;
 import com.example.demo.wechat.utils.MenuUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 微信公众号相关服务
@@ -185,5 +184,39 @@ public class WeChatOfficialAccountService {
         menuDO.setIsEnable(0);
 
         wechatOfficialAccountMenuMapper.insertOne(menuDO);
+    }
+
+    public JSONObject sendTemplateMsg(String openId, String templateId, String jumpUrl,
+                                String title, String name,
+                                String pName, String date, String remark) {
+        WeChatTemplateMsg templateMsg = new WeChatTemplateMsg();
+        templateMsg.setTemplate_id(templateId);
+        templateMsg.setTouser(openId);
+        if (StringUtils.hasText(jumpUrl)) {
+            templateMsg.setUrl(jumpUrl);
+        }
+        Map<String, WeChatTemplateData> templateData = new HashMap<>();
+        WeChatTemplateData result = new WeChatTemplateData();
+        result.setValue(title);
+        result.setColor("#173177");
+        templateData.put("first", result);
+        WeChatTemplateData userName = new WeChatTemplateData();
+        userName.setValue(name);
+        userName.setColor("#173177");
+        templateData.put("keyword1", userName);
+        WeChatTemplateData productName = new WeChatTemplateData();
+        productName.setValue(pName);
+        productName.setColor("#373277");
+        templateData.put("keyword2", productName);
+        WeChatTemplateData d = new WeChatTemplateData();
+        d.setValue(date);
+        templateData.put("keyword3", d);
+        WeChatTemplateData remarks = new WeChatTemplateData();
+        remarks.setValue(remark);
+        templateData.put("remark", remarks);
+
+        templateMsg.setData(templateData);
+
+        return weChatOfficialAccountApiService.sendTemplateMsg(templateMsg);
     }
 }

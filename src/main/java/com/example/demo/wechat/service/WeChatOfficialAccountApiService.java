@@ -31,7 +31,7 @@ import java.util.Date;
 @Service
 public class WeChatOfficialAccountApiService {
     public static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
-    public static final String ACCESS_TOKEN_CACHE_KEY = "wechat_access_token_wealth";
+    public static final String ACCESS_TOKEN_CACHE_KEY = "wechat_access_token_";
     @Value("${wechat.appId}")
     private String appId;
     @Value("${wechat.appSecret}")
@@ -47,8 +47,9 @@ public class WeChatOfficialAccountApiService {
      * @return
      */
     public String getWeChatAccessToken() {
+        String key = ACCESS_TOKEN_CACHE_KEY + appId;
         String accessToken = null;
-        JSONObject jsonObject = RedisTemplateUtil.get(ACCESS_TOKEN_CACHE_KEY);
+        JSONObject jsonObject = RedisTemplateUtil.get(key);
         if (null != jsonObject) {
             return jsonObject.getString("access_token");
         }
@@ -63,7 +64,7 @@ public class WeChatOfficialAccountApiService {
                 accessToken = jsonObject.getString("access_token");
                 if (!StringUtils.isEmpty(accessToken)) {
                     // 微信token有效期是2小时
-                    RedisTemplateUtil.set(ACCESS_TOKEN_CACHE_KEY, jsonObject, 7000);
+                    RedisTemplateUtil.set(key, jsonObject, 7000);
                     return accessToken;
                 } else {
                     log.error("gain wechat access_token fail -- message:{}", jsonObject.toJSONString());
@@ -99,7 +100,7 @@ public class WeChatOfficialAccountApiService {
      *                    templateData.put("withdrawTime", withdrawTime); <br>
      *                    <p>
      *                    templateMsg.setData(templateData);
-     * @return
+     * @returnsendTemplateMsg
      */
     public JSONObject sendTemplateMsg(WeChatTemplateMsg templateMsg) {
         String sendTemplateMsgUrl = String.format("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s",
