@@ -26,6 +26,14 @@ public class WeChatResponseMsgService {
     @Autowired
     private WeChatOfficialAccountApiService apiService;
 
+    /**
+     * 处理用户的点击、输入事件
+     *
+     * @param inputMsg
+     * @return java.lang.String
+     * @author zhou.xy
+     * @since 1.0
+     */
     public String processMsg(WeChatInputMsg inputMsg) {
         // 不存在用户信息则记录，存在跳过
         if (inputMsg != null && !StringUtils.isEmpty(inputMsg.getFromUserName())) {
