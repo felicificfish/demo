@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -208,6 +205,22 @@ public class WeChatOfficialAccountController {
         WechatOfficialAccountMenuDO menuDO = new WechatOfficialAccountMenuDO();
         BeanUtils.copyProperties(menuDTO, menuDO);
         weChatOfficialAccountService.addMenu(menuDO, 1L, "admin");
+    }
+
+    /**
+     * 菜单禁用启用
+     *
+     * @param appId    公众号开发者ID
+     * @param menuId   菜单ID
+     * @param isEnable 1-启用；0-禁用；
+     * @return void
+     * @author zhou.xy
+     * @date 2019/8/30
+     * @since 1.0
+     */
+    @PutMapping("/wechat/menu/enable")
+    public void enableMenu(String appId, Long menuId, Integer isEnable) {
+        weChatOfficialAccountService.enableMenu(appId, menuId, isEnable, 1L, "admin");
     }
 
     /**

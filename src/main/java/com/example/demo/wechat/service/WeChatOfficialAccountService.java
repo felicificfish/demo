@@ -215,6 +215,87 @@ public class WeChatOfficialAccountService {
         wechatOfficialAccountMenuMapper.insertOne(menuDO);
     }
 
+    /**
+     * 菜单禁用启用
+     *
+     * @param appId
+     * @param menuId
+     * @param isEnable
+     * @param userId
+     * @param userName
+     * @return void
+     * @author zhou.xy
+     * @date 2019/8/30
+     * @since 1.0
+     */
+    public void enableMenu(String appId, Long menuId, Integer isEnable, Long userId, String userName) {
+        if (StringUtils.isEmpty(appId)) {
+            throw new ValidateException("公众号开发者ID不能为空");
+        }
+        if (menuId == null) {
+            throw new ValidateException("菜单ID不能为空");
+        }
+        if (isEnable == null || !Arrays.asList(0, 1).contains(isEnable)) {
+            throw new ValidateException("未知的操作类型");
+        }
+        WechatOfficialAccountMenuDO query = new WechatOfficialAccountMenuDO();
+        query.setMenuId(menuId);
+        query.setAppId(appId);
+        query.setIsDel(0);
+        List<WechatOfficialAccountMenuDO> menuList = wechatOfficialAccountMenuMapper.query(query);
+        if (CollectionUtils.isEmpty(menuList)) {
+            throw new ValidateException("菜单不存在");
+        }
+        WechatOfficialAccountMenuDO menuDO = menuList.get(0);
+        if (isEnable == 1) {
+            if (menuDO.getIsEnable() == 1) {
+                throw new ValidateException("菜单已经是启用状态");
+            }
+            // 启用时，需要判断对应菜单级别已启用个数，一级菜单最多三个，二级菜单最多5个
+            Integer limit = 3;
+            String menuLevelStr = "一级";
+            if (menuDO.getMenuLevel() == 2) {
+                limit = 5;
+                menuLevelStr = "二级";
+            }
+            Example example = new Example(WechatOfficialAccountMenuDO.class);
+            example.createCriteria().andEqualTo("isDel", 0)
+                    .andEqualTo("appId", appId)
+                    .andEqualTo("menuLevel", menuDO.getMenuLevel())
+                    .andEqualTo("isEnable", 1);
+            int enableCount = wechatOfficialAccountMenuMapper.selectCountByExample(example);
+            if (enableCount >= limit) {
+                throw new ValidateException("启用" + menuLevelStr + "菜单数量已达上限！");
+            }
+            menuDO.setIsEnable(1);
+        } else {
+            if (menuDO.getIsEnable() == 0) {
+                throw new ValidateException("菜单已经是禁用状态");
+            }
+            menuDO.setIsEnable(0);
+        }
+        menuDO.setModifiedon(new Date());
+        menuDO.setModifierId(userId);
+        menuDO.setModifier(userName);
+        wechatOfficialAccountMenuMapper.update(menuDO);
+    }
+
+    /**
+     * 发送模板消息
+     *
+     * @param openId
+     * @param templateId
+     * @param jumpUrl
+     * @param title
+     * @param name
+     * @param pName
+     * @param date
+     * @param remark
+     * @return com.alibaba.fastjson.JSONObject
+     * @author zhou.xy
+     * @date 2019/8/29
+     * @since 1.0
+     */
     public JSONObject sendTemplateMsg(String openId, String templateId, String jumpUrl,
                                       String title, String name,
                                       String pName, String date, String remark) {
