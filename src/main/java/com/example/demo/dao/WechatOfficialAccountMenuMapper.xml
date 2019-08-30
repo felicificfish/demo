@@ -288,6 +288,21 @@
         AND menu_id = #{menuId}
     </update>
 
+    <update id="deleteByMenuId" parameterType="com.example.demo.model.WechatOfficialAccountMenuDO">
+        UPDATE trans_wechat_official_account_menu
+        <set>
+            is_del = 1,
+            modifier_id = #{modifierId},
+            modifier = #{modifier},
+            modifiedon = #{modifiedon}
+        </set>
+        WHERE is_del = 0
+        AND menu_id IN
+        <foreach collection="menuIdList" item="menuId" open="(" separator="," close=")">
+            #{menuId}
+        </foreach>
+    </update>
+
     <update id="updateBatch" parameterType="java.util.List">
         <foreach collection="list" item="item" index="index" open="" close="" separator="">
             UPDATE trans_wechat_official_account_menu

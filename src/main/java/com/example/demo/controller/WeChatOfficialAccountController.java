@@ -183,8 +183,15 @@ public class WeChatOfficialAccountController {
      */
     @DeleteMapping(value = "/wechat/menu/delete")
     public void deleteMenu(String menuIds) {
-        log.info("delete menuIds : {}", menuIds);
-        // TODO
+        if (StringUtils.isEmpty(menuIds)) {
+            throw new ValidateException("没有可删除的数据");
+        }
+        List<Long> menuIdList = new ArrayList<>();
+        String[] split = menuIds.split(",");
+        for (String menuId : split) {
+            menuIdList.add(Long.valueOf(menuId));
+        }
+        weChatOfficialAccountService.deleteMenu(menuIdList, 1L, "admin");
     }
 
     /**

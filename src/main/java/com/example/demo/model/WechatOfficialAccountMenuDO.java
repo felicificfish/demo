@@ -111,4 +111,9 @@ public class WechatOfficialAccountMenuDO implements Serializable {
      */
     @Transient
     private List<WechatOfficialAccountMenuDO> children;
+    /**
+     * 菜单ID集合
+     */
+    @Transient
+    private List<Long> menuIdList;
 }

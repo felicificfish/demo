@@ -95,6 +95,35 @@ public class WeChatOfficialAccountService {
     }
 
     /**
+     * 删除菜单
+     *
+     * @param menuIdList
+     * @param userId
+     * @param userName
+     * @return void
+     * @author zhou.xy
+     * @date 2019/8/29
+     * @since 1.0
+     */
+    public void deleteMenu(List<Long> menuIdList, Long userId, String userName) {
+        Example example = new Example(WechatOfficialAccountMenuDO.class);
+        example.createCriteria().andIn("menuId", menuIdList)
+                .andEqualTo("isEnable", 1)
+                .andEqualTo("isDel", 0);
+        int count = wechatOfficialAccountMenuMapper.selectCountByExample(example);
+        if (count > 0) {
+            throw new ValidateException("存在启用菜单，不能删除！");
+        }
+
+        WechatOfficialAccountMenuDO menuDO = new WechatOfficialAccountMenuDO();
+        menuDO.setMenuIdList(menuIdList);
+        menuDO.setModifiedon(new Date());
+        menuDO.setModifier(userName);
+        menuDO.setModifierId(userId);
+        wechatOfficialAccountMenuMapper.deleteByMenuId(menuDO);
+    }
+
+    /**
      * 删除已发布菜单
      *
      * @param userId
@@ -187,8 +216,8 @@ public class WeChatOfficialAccountService {
     }
 
     public JSONObject sendTemplateMsg(String openId, String templateId, String jumpUrl,
-                                String title, String name,
-                                String pName, String date, String remark) {
+                                      String title, String name,
+                                      String pName, String date, String remark) {
         WeChatTemplateMsg templateMsg = new WeChatTemplateMsg();
         templateMsg.setTemplate_id(templateId);
         templateMsg.setTouser(openId);

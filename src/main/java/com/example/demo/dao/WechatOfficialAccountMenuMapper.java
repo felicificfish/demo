@@ -21,6 +21,8 @@ public interface WechatOfficialAccountMenuMapper extends BaseMapper<WechatOffici
 
     int updateBatch(List<WechatOfficialAccountMenuDO> list);
 
+    int deleteByMenuId(WechatOfficialAccountMenuDO menuDO);
+
     WechatOfficialAccountMenuDO queryById(Long id);
 
     List<WechatOfficialAccountMenuDO> query(WechatOfficialAccountMenuDO wechatOfficialAccountMenuDO);
