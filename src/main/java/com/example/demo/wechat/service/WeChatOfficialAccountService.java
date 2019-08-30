@@ -4,7 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.demo.configs.exception.ValidateException;
 import com.example.demo.configs.mapper.entity.Example;
 import com.example.demo.dao.WechatOfficialAccountMenuMapper;
+import com.example.demo.dao.WechatOfficialAccountUserMapper;
 import com.example.demo.model.WechatOfficialAccountMenuDO;
+import com.example.demo.model.WechatOfficialAccountUserDO;
+import com.example.demo.utils.RedisTemplateUtil;
 import com.example.demo.wechat.constant.MenuTypeEnum;
 import com.example.demo.wechat.model.WeChatTemplateData;
 import com.example.demo.wechat.model.WeChatTemplateMsg;
@@ -26,10 +29,13 @@ import java.util.*;
 @Log4j2
 @Service
 public class WeChatOfficialAccountService {
+    public static final String WECHAT_USER_INFO_CACHE_PREFIX = "wechat_user_info_";
     @Autowired
     private WechatOfficialAccountMenuMapper wechatOfficialAccountMenuMapper;
     @Autowired
     private WeChatOfficialAccountApiService weChatOfficialAccountApiService;
+    @Autowired
+    private WechatOfficialAccountUserMapper wechatOfficialAccountUserMapper;
 
     /**
      * 查询菜单
@@ -328,5 +334,26 @@ public class WeChatOfficialAccountService {
         templateMsg.setData(templateData);
 
         return weChatOfficialAccountApiService.sendTemplateMsg(templateMsg);
+    }
+
+    /**
+     * 获取微信用户信息（本地），有缓存，有效时长2h
+     *
+     * @param openId
+     * @return com.example.demo.model.WechatOfficialAccountUserDO
+     * @author zhou.xy
+     * @date 2019/8/30
+     * @since 1.0
+     */
+    public WechatOfficialAccountUserDO queryUser(String openId) {
+        String key = WECHAT_USER_INFO_CACHE_PREFIX + openId;
+        WechatOfficialAccountUserDO userDO = RedisTemplateUtil.get(key);
+        if (userDO == null) {
+            userDO = wechatOfficialAccountUserMapper.selectByPrimaryKey(openId);
+            if (userDO != null) {
+                RedisTemplateUtil.set(key, userDO, 2L * 3600);
+            }
+        }
+        return userDO;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.wechat.service;
 
+import com.example.demo.model.WechatOfficialAccountUserDO;
 import com.example.demo.wechat.model.WeChatInputMsg;
 import com.example.demo.wechat.model.WeChatTextMsg;
 import com.example.demo.wechat.utils.WeChatMsgUtil;
@@ -21,9 +22,21 @@ import java.util.Objects;
 public class WeChatResponseMsgService {
     public static final String WELCOME_MSG = "您好，感谢您的关注！";
     @Autowired
-    private WeChatOfficialAccountApiService weChatOfficialAccountApiService;
+    private WeChatOfficialAccountService weChatOfficialAccountService;
+    @Autowired
+    private WeChatOfficialAccountApiService apiService;
 
     public String processMsg(WeChatInputMsg inputMsg) {
+        // 不存在用户信息则记录，存在跳过
+        if (inputMsg != null && !StringUtils.isEmpty(inputMsg.getFromUserName())) {
+            if (!Objects.equals(WeChatMsgUtil.EVENT_TYPE_SUBSCRIBE, inputMsg.getEvent())
+                    && !Objects.equals(WeChatMsgUtil.EVENT_TYPE_UNSUBSCRIBE, inputMsg.getEvent())) {
+                WechatOfficialAccountUserDO userDO = weChatOfficialAccountService.queryUser(inputMsg.getFromUserName());
+                if (userDO == null) {
+                    apiService.getUserInfoAndSave(inputMsg.getFromUserName());
+                }
+            }
+        }
         String msgType = inputMsg.getMsgType();
         if (Objects.equals(WeChatMsgUtil.REQ_MESSAGE_TYPE_TEXT, msgType)) {
             return processTextMsg(inputMsg, WELCOME_MSG);
@@ -66,7 +79,7 @@ public class WeChatResponseMsgService {
             // 关注公众号
             String openId = inputMessage.getFromUserName();
             if (!StringUtils.isEmpty(openId)) {
-                weChatOfficialAccountApiService.getUserInfoAndSave(openId);
+                apiService.getUserInfoAndSave(openId);
             }
             inputMessage.setContent(WELCOME_MSG);
             response = processTextMsg(inputMessage, WELCOME_MSG);

@@ -133,10 +133,7 @@ public class WeChatOfficialAccountApiService {
         if (StringUtils.isEmpty(openId)) {
             return;
         }
-        log.info("【{}】关注微信公众号，获取其相关信息", openId);
-        String getUserInfoUrl = String.format("https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN",
-                getWeChatAccessToken(), openId);
-        JSONObject jsonObject = restTemplate.getForObject(getUserInfoUrl, JSONObject.class);
+        JSONObject jsonObject = userInfo(openId);
 //        // 记录交互日志
 //        WeChatOfficialApiDO weChatOfficialApiDO = new WeChatOfficialApiDO(2, getUserInfoUrl, "", null == jsonObject ? "" : jsonObject.toJSONString());
 //        weChatOfficialApiService.asyncSave(weChatOfficialApiDO);
@@ -185,6 +182,7 @@ public class WeChatOfficialAccountApiService {
             userDO.setCreatedon(new Date());
             wechatOfficialAccountUserMapper.insertOne(userDO);
         }
+        RedisTemplateUtil.set(WeChatOfficialAccountService.WECHAT_USER_INFO_CACHE_PREFIX + openId, userDO, 2L * 3600);
     }
 
     /**
