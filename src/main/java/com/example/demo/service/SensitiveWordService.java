@@ -29,11 +29,7 @@ public class SensitiveWordService {
      * @since 1.0
      */
     public List<SensitiveWordDO> queryList() {
-        // TODO 缓存
-        long s = System.currentTimeMillis();
         List<SensitiveWordDO> sensitiveWordList = sensitiveWordMapper.selectAll();
-        long e = System.currentTimeMillis();
-        log.info("==================查询时间：{}秒", (e - s) / 1000);
         return sensitiveWordList;
     }
 }

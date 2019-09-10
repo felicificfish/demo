@@ -41,19 +41,12 @@ public class SensitiveWordInit {
             if (CollectionUtils.isEmpty(sensitiveWordList)) {
                 return null;
             }
-            log.info("==================敏感词数量：{}个", sensitiveWordList.size());
-            long s = System.currentTimeMillis();
             Set<String> keywordSet = new HashSet<>();
             for (SensitiveWordDO wordDO : sensitiveWordList) {
                 keywordSet.add(wordDO.getWord().trim());
             }
-            long e = System.currentTimeMillis();
-            log.info("==================List 转 Set耗时：{}秒", (e - s) / 1000);
             // 将敏感词库加到HashMap
             addSensitiveWordToHashMap(keywordSet);
-            e = System.currentTimeMillis();
-            log.info("==================将敏感词库加到HashMap耗时：{}秒", (e - s) / 1000);
-
             RedisTemplateUtil.set(SENSITIVE_WORD_CACHE_KEY, sensitiveWordMap);
         }
         return sensitiveWordMap;
@@ -97,9 +90,7 @@ public class SensitiveWordInit {
                 if (i == word.length() - 1) {
                     currentMap.put("isEnd", "1");
                 }
-                log.warn("封装敏感词库过程：" + sensitiveWordMap);
             }
-            log.warn("查看敏感词库数据:" + sensitiveWordMap);
         }
     }
 }
