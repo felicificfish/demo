@@ -7,14 +7,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="input-group input-group-lg">
-        <span class="input-group-addon" id="sizing-addon1">@</span>
-        <input type="text" class="form-control" id="userId" name="userId" placeholder="请输入用户ID"
-               aria-describedby="sizing-addon1">
-    </div>
-
-    <div>
-        <button type="button" class="btn btn-default" onclick="openSocket()">开启socket</button>
+    <div class="input-group">
+        <input type="text" class="form-control" id="userId" name="userId" placeholder="请输入用户ID" aria-label="Text input with multiple buttons">
+        <div class="input-group-btn">
+            <button class="btn btn-default" type="button" onclick="openSocket()">开启socket</button>
+        </div>
     </div>
 
     <div id="msgBox"></div>
@@ -59,7 +56,7 @@
                     let text =
                         '<div class="panel panel-success" id="' + m.messageId + '">' +
                         '<div class="panel-heading">' +
-                        '<img width="30px" src="' + m.avatar + '"/><h3 class="panel-title">' + m.nickname + ' 发布于：' + time + '</h3>' +
+                        '<img width="30px" src="' + m.avatar + '"/><h3 class="panel-title">[' + m.nickname + ']发布于：' + time + '</h3>' +
                         '</div>' +
                         '<div class="panel-body">' +
                         m.message
