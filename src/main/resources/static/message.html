@@ -65,9 +65,9 @@
                     $("#msgBox").append(text);
                 }
                 if (m.opt == 2) {
-                    $("#" + m.messageId).remove();
-                    // $("#" + m.messageId).text("管理员撤回了一条消息");
-                    // $("#" + m.messageId).attr("style", "font-size:small;color:gray");
+                    // $("#" + m.messageId).remove();
+                    $("#" + m.messageId).text("管理员撤回了一条消息");
+                    $("#" + m.messageId).attr("style", "font-size:small;color:gray");
                 }
             };
             //关闭事件
