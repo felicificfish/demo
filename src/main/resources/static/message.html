@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>websocket通讯</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon" id="sizing-addon1">@</span>
+        <input type="text" class="form-control" id="userId" name="userId" placeholder="请输入用户ID"
+               aria-describedby="sizing-addon1">
+    </div>
+
+    <div>
+        <button type="button" class="btn btn-default" onclick="openSocket()">开启socket</button>
+    </div>
+
+    <div id="msgBox"></div>
+
+    <div class="input-group">
+        <input type="text" class="form-control" id="contentText" placeholder="请输入留言信息" aria-label="Text input with multiple buttons">
+        <div class="input-group-btn">
+            <button class="btn btn-default" type="button" onclick="sendMessage()">发送</button>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script>
+    var socket;
+
+    function openSocket() {
+        if (typeof(WebSocket) == "undefined") {
+            console.log("您的浏览器不支持WebSocket");
+        } else {
+            console.log("您的浏览器支持WebSocket");
+            let socketUrl = "http://localhost:28080/websocket/" + $("#userId").val();
+            socketUrl = socketUrl.replace("https", "ws").replace("http", "ws");
+            console.log("请求地址：" + socketUrl)
+            socket = new WebSocket(socketUrl);
+            //打开事件
+            socket.onopen = function () {
+                console.log("websocket已打开");
+                //socket.send("这是来自客户端的消息" + location.href + new Date());
+            };
+            //获得消息事件
+            socket.onmessage = function (msg) {
+                //发现消息进入    开始处理前端触发逻辑
+                console.log(msg);
+                let m = JSON.parse(msg.data);
+                if (m.opt == undefined) {
+                    return;
+                }
+                if (m.opt == 1) {
+                    var time = new Date(m.sendTime);
+                    time = time.getFullYear() + '-' + (time.getMonth() + 1) + '-' + time.getDate()
+                        + ' ' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
+                    let text =
+                        '<div class="panel panel-success" id="' + m.messageId + '">' +
+                        '<div class="panel-heading">' +
+                        '<img width="30px" src="' + m.avatar + '"/><h3 class="panel-title">' + m.nickname + ' 发布于：' + time + '</h3>' +
+                        '</div>' +
+                        '<div class="panel-body">' +
+                        m.message
+                    '</div>' +
+                    '</div>';
+                    $("#msgBox").append(text);
+                }
+                if (m.opt == 2) {
+                    $("#" + m.messageId).remove();
+                    // $("#" + m.messageId).text("管理员撤回了一条消息");
+                    // $("#" + m.messageId).attr("style", "font-size:small;color:gray");
+                }
+            };
+            //关闭事件
+            socket.onclose = function () {
+                console.log("websocket已关闭");
+            };
+            //发生了错误事件
+            socket.onerror = function () {
+                console.log("websocket发生了错误");
+            }
+        }
+    }
+
+    function sendMessage() {
+        if (typeof(WebSocket) == "undefined") {
+            console.log("您的浏览器不支持WebSocket");
+        } else {
+            console.log("您的浏览器支持WebSocket");
+            socket.send('{"message":"' + $("#contentText").val() + '"}');
+        }
+    }
+</script>
+</html>
