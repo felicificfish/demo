@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.example.demo.model.LeaveMessageDO;
+import com.example.demo.utils.SensitiveWordUtil;
 import com.example.demo.websocket.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -31,6 +32,7 @@ public class LeaveMessageController {
         try {
             message.setOpt(LeaveMessageDO.OPT_SEND);
             message.setSendTime(new Date());
+            message.setMessage(SensitiveWordUtil.replaceSensitiveWord(message.getMessage(), 2, "*"));
             webSocketServer.sendInfo(JSON.toJSONString(message), null);
         } catch (IOException e) {
             e.printStackTrace();
