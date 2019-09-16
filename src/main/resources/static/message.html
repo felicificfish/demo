@@ -32,7 +32,7 @@
             console.log("您的浏览器不支持WebSocket");
         } else {
             console.log("您的浏览器支持WebSocket");
-            let socketUrl = "http://localhost:28080/websocket/" + $("#userId").val();
+            let socketUrl = "http://192.168.2.243:28080/websocket/" + $("#userId").val();
             socketUrl = socketUrl.replace("https", "ws").replace("http", "ws");
             console.log("请求地址：" + socketUrl)
             socket = new WebSocket(socketUrl);

@@ -123,11 +123,15 @@ public class WebSocketServer {
         if (StringUtils.isEmpty(message)) {
             return;
         }
+        LeaveMessageDO messageDO = JSON.parseObject(message, LeaveMessageDO.class);
+        messageDO.setOpt(LeaveMessageDO.OPT_SEND);
+        message = JSON.toJSONString(messageDO);
         if (asyncRequestThreadPool == null) {
             asyncRequestThreadPool = SpringContext.getBean(ThreadPoolTaskExecutor.class);
         }
         for (Map.Entry<String, WebSocketServer> item : websocketList.entrySet()) {
-            asyncRequestThreadPool.execute(() -> item.getValue().sendMessage(message));
+            String finalMessage = message;
+            asyncRequestThreadPool.execute(() -> item.getValue().sendMessage(finalMessage));
         }
     }
 
