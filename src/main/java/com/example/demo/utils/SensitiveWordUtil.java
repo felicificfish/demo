@@ -3,10 +3,7 @@ package com.example.demo.utils;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.util.CollectionUtils;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 敏感词工具类（基于DFA算法）
@@ -165,7 +162,7 @@ public class SensitiveWordUtil {
         for (int i = beginIndex; i < text.length(); i++) {
             word = text.charAt(i);
             // 判断该字是否存在于敏感词库中
-            sensitiveWordMap = (Map<String, Object>) sensitiveWordMap.get(word);
+            sensitiveWordMap = (Map<String, Object>) sensitiveWordMap.get(Objects.toString(word));
             if (sensitiveWordMap == null) {
                 break;
             }
