@@ -1,11 +1,16 @@
 package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.example.demo.client.ClientResponse;
+import com.example.demo.client.clients.CasAPI;
 import com.example.demo.configs.api.JsonResultDO;
+import com.example.demo.configs.exception.ValidateException;
 import com.example.demo.constant.Constants;
 import com.example.demo.model.RedPackageDO;
 import com.example.demo.model.Student1;
 import com.example.demo.model.Student2;
+import com.example.demo.service.ExternalInterface;
 import com.example.demo.service.MultithreadingService;
 import com.example.demo.utils.RedPackageUtil;
 import com.example.demo.utils.RedisTemplateUtil;
@@ -33,7 +38,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * HelloController
@@ -49,6 +57,8 @@ public class HelloController {
 
     @Autowired
     private MultithreadingService multithreadingService;
+    @Autowired
+    private ExternalInterface externalInterface;
 
     @GetMapping(value = "hello")
     public String hello() {
@@ -288,5 +298,23 @@ public class HelloController {
         }
         list.add(total);
         return list;
+    }
+
+    @PostMapping("/cas/login")
+    public JSONObject casLogin(String userMobile, String userPassword) {
+        Map<String, Object> params = new HashMap<>(3);
+        params.put("account", userMobile);
+        params.put("password", userPassword);
+        params.put("menuId", "2");
+        try {
+            ClientResponse response = externalInterface.call(CasAPI.LOGIN, params);
+            if (response.isSuccess()) {
+                return response.getResult();
+            } else {
+                throw new ValidateException(response.getMsg());
+            }
+        } catch (Exception e) {
+            throw new ValidateException(e.getMessage());
+        }
     }
 }
